@@ -1,4 +1,5 @@
 import { pgTable, text, timestamp } from "drizzle-orm/pg-core";
+import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
 export const users = pgTable("user", {
   id: text("id").primaryKey(),
@@ -22,11 +23,24 @@ export const sessions = pgTable("session", {
 
 export const signups = pgTable("signup", {
   id: text("id").primaryKey(),
-  adminId: text("admin_id").references(() => users.id),
   userId: text("user_id")
     .notNull()
     .references(() => users.id),
   status: text("status", {
     enum: ["pending", "approved", "rejected"],
-  }).notNull(),
+  })
+    .notNull()
+    .default("pending"),
 });
+
+export const insertUserSchema = createInsertSchema(users, {
+  username: (schema) =>
+    schema.username.min(3, {
+      message: "Username must contain at least 4 characters",
+    }),
+  password: (schema) =>
+    schema.password.min(4, {
+      message: "Password must contain at least 4 characters",
+    }),
+});
+export const selectUserSchema = createSelectSchema(users);
