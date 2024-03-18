@@ -54,7 +54,7 @@ export default async function login(_prevState: any, formData: FormData) {
       sessionCookie.attributes
     );
 
-    redirectPath = existingUser.role === "admin" ? "/signups" : "/";
+    redirectPath = existingUser.role === "admin" ? "/users" : "/";
   } catch (error) {
     console.error(error);
     return { errors: ["Something went wrong"] };

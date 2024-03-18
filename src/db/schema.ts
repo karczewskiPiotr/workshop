@@ -33,6 +33,7 @@ export const signups = pgTable("signup", {
     .default("pending"),
 });
 
+export type User = typeof users.$inferSelect;
 export const insertUserSchema = createInsertSchema(users, {
   username: (schema) =>
     schema.username.min(3, {
@@ -44,3 +45,6 @@ export const insertUserSchema = createInsertSchema(users, {
     }),
 });
 export const selectUserSchema = createSelectSchema(users);
+
+export type Signup = typeof signups.$inferSelect;
+export const insertSignupSchema = createInsertSchema(signups);

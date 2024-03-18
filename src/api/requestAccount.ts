@@ -3,6 +3,7 @@
 import { db } from "@/db";
 import { insertUserSchema, signups, users } from "@/db/schema";
 import { generateId } from "lucia";
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { Argon2id } from "oslo/password";
 
@@ -43,5 +44,6 @@ export default async function requestAccount(
     return { errors: ["Something went wrong"] };
   }
 
+  revalidatePath("/users");
   return redirect("/");
 }
