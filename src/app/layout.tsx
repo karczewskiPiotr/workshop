@@ -1,12 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import logout from "@/api/auth/logout";
-import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/theme-provider";
-import { ModeToggle } from "@/components/mode-toggle";
-import { Button, buttonVariants } from "@/components/ui/button";
-import Link from "next/link";
+import Header from "@/components/header";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -29,17 +25,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <header className="mb-4 flex space-x-4 items-center p-2 border-b">
-            <nav className="mr-auto">
-              <Link href="/" className={buttonVariants({ variant: "ghost" })}>
-                Home
-              </Link>
-            </nav>
-            <ModeToggle />
-            <form action={logout}>
-              <Button>Log out</Button>
-            </form>
-          </header>
+          <Header />
           {children}
         </ThemeProvider>
       </body>
