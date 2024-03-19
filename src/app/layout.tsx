@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import logout from "@/api/logout";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -15,8 +16,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
+    <html lang="en" className="p-2">
+      <body className={inter.className}>
+        <header className="mb-4">
+          <form action={logout}>
+            <button className="p-2 bg-neutral-200">Log out</button>
+          </form>
+        </header>
+        {children}
+      </body>
     </html>
   );
 }
