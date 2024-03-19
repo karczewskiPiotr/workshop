@@ -1,7 +1,8 @@
 "use client";
 
-import approve from "@/api/auth/approveAccountRequest";
-import { Signup, User, insertSignupSchema } from "@/db/schema";
+import updateAccountRequest from "@/api/auth/update-account-request";
+import { Button } from "@/components/ui/button";
+import { Signup, User } from "@/db/schema";
 
 type Props = {
   id: Signup["id"];
@@ -11,8 +12,26 @@ type Props = {
 
 export default function Request({ id, username, status }: Props) {
   return (
-    <li>
-      {username}: {status} <button onClick={() => approve(id)}>Approve</button>
-    </li>
+    <tr>
+      <td>{username}</td>
+      <td>{status}</td>
+      <td>
+        <Button
+          onClick={() => updateAccountRequest(id, "approved")}
+          disabled={status === "approved"}
+        >
+          Approve
+        </Button>
+      </td>
+      <td>
+        <Button
+          variant="destructive"
+          onClick={() => updateAccountRequest(id, "rejected")}
+          disabled={status === "rejected"}
+        >
+          Reject
+        </Button>
+      </td>
+    </tr>
   );
 }

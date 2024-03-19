@@ -1,17 +1,21 @@
-"use server"
+"use server";
 
 import { lucia } from "@/auth";
-import validateRequest from "./validateRequest";
+import validateRequest from "./validate-request";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 export default async function logout() {
   const { session } = await validateRequest();
-  if (!session) return { errors: ["Not logged in"] }
+  if (!session) return { errors: ["Not logged in"] };
 
-  await lucia.invalidateSession(session.id)
+  await lucia.invalidateSession(session.id);
   const sessionCookie = lucia.createBlankSessionCookie();
-  cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
+  cookies().set(
+    sessionCookie.name,
+    sessionCookie.value,
+    sessionCookie.attributes
+  );
 
-  return redirect("/login")
+  return redirect("/login");
 }

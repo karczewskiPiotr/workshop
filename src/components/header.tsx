@@ -2,7 +2,7 @@ import logout from "@/api/auth/logout";
 import { ModeToggle } from "@/components/mode-toggle";
 import { Button, buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
-import validateRequest from "@/api/auth/validateRequest";
+import validateRequest from "@/api/auth/validate-request";
 
 export default async function Header() {
   const { user } = await validateRequest();
