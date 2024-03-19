@@ -12,15 +12,10 @@ export default function SignUpForm() {
   return (
     <form className="space-y-2" action={formAction}>
       <Label htmlFor="username">Username</Label>
-      <Input name="username" id="username" type="text" className="text-black" />
+      <Input name="username" id="username" type="text" />
       <br />
       <Label htmlFor="password">Password</Label>
-      <Input
-        type="password"
-        name="password"
-        id="password"
-        className="text-black"
-      />
+      <Input type="password" name="password" id="password" />
       <br />
       {state?.errors.map((error, index) => (
         <p key={`signUpFormError-${index}`} className="text-destructive">

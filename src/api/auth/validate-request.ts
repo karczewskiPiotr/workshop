@@ -18,7 +18,8 @@ export default cache(async function validateRequest() {
       cookies().set(cookie.name, cookie.value, cookie.attributes);
     }
   } catch (error: unknown) {
-    console.error(error);
+    // Supress the error if attempting to set a cookie during page render:
+    // https://lucia-auth.com/guides/validate-session-cookies/nextjs-app
   }
 
   return result;

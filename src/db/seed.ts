@@ -13,4 +13,4 @@ import { env } from "../env";
     password: await new Argon2id().hash(env.ADMIN_PASSWORD),
     role: "admin",
   });
-})();
+})().then(() => console.log("Seeded database"));
