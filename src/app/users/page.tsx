@@ -1,6 +1,6 @@
 import { signups, users } from "@/db/schema";
 import { db } from "@/db";
-import Request from "./_components/Request";
+import Request from "./_components/request";
 import { eq } from "drizzle-orm";
 import validateRequest from "@/api/auth/validateRequest";
 import { redirect } from "next/navigation";

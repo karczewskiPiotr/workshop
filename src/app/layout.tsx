@@ -2,8 +2,13 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import logout from "@/api/auth/logout";
+import { cn } from "@/lib/utils";
+import { ThemeProvider } from "@/components/theme-provider";
+import { ModeToggle } from "@/components/mode-toggle";
+import { Button, buttonVariants } from "@/components/ui/button";
+import Link from "next/link";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -16,14 +21,27 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="p-2">
-      <body className={inter.className}>
-        <header className="mb-4">
-          <form action={logout}>
-            <button className="p-2 bg-neutral-200">Log out</button>
-          </form>
-        </header>
-        {children}
+    <html lang="en" className={inter.className} suppressHydrationWarning>
+      <body className={"min-h-screen bg-background antialiased font-sans"}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <header className="mb-4 flex space-x-4 items-center p-2 border-b">
+            <nav className="mr-auto">
+              <Link href="/" className={buttonVariants({ variant: "ghost" })}>
+                Home
+              </Link>
+            </nav>
+            <ModeToggle />
+            <form action={logout}>
+              <Button>Log out</Button>
+            </form>
+          </header>
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -1,6 +1,9 @@
 "use client";
 
 import requestAccount from "@/api/auth/requestAccount";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { useFormState } from "react-dom";
 
 export default function SignUpForm() {
@@ -8,23 +11,24 @@ export default function SignUpForm() {
 
   return (
     <form className="space-y-2" action={formAction}>
-      <label htmlFor="username">Username</label>
-      <input name="username" id="username" type="text" className="text-black" />
+      <Label htmlFor="username">Username</Label>
+      <Input name="username" id="username" type="text" className="text-black" />
       <br />
-      <label htmlFor="password">Password</label>
-      <input
+      <Label htmlFor="password">Password</Label>
+      <Input
         type="password"
         name="password"
         id="password"
         className="text-black"
       />
       <br />
-      <button type="submit">Continue</button>
       {state?.errors.map((error, index) => (
-        <p key={`signUpFormError-${index}`} className="text-red-500">
+        <p key={`signUpFormError-${index}`} className="text-destructive">
           {error}
         </p>
       ))}
+      <br />
+      <Button type="submit">Continue</Button>
     </form>
   );
 }
