@@ -1,6 +1,6 @@
 "use client";
 
-import approve from "@/api/approve";
+import approve from "@/api/auth/approveAccountRequest";
 import { Signup, User, insertSignupSchema } from "@/db/schema";
 
 type Props = {

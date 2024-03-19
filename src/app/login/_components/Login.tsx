@@ -1,6 +1,6 @@
 "use client";
 
-import login from "@/api/login";
+import login from "@/api/auth/login";
 import { useFormState } from "react-dom";
 
 export default function SignUpForm() {

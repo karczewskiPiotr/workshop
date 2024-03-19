@@ -1,4 +1,4 @@
-import validateRequest from "@/api/validateRequest";
+import validateRequest from "@/api/auth/validateRequest";
 import SignInForm from "./_components/Login";
 import { redirect } from "next/navigation";
 

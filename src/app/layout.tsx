@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import logout from "@/api/logout";
+import logout from "@/api/auth/logout";
 
 const inter = Inter({ subsets: ["latin"] });
 
