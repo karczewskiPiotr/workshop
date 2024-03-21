@@ -8,14 +8,16 @@ export default async function sendEmailVerificationcode(
 ) {
   const verificationCode = await generateEmailVerificationCode(userId, email);
 
-  console.log("verificationCode", verificationCode);
-
-  const d = await resend.emails.send({
+  const resendResponse = await resend.emails.send({
     from: "workshop@resend.dev",
     to: email,
     subject: "Workshop - Email verification",
     html: `<p>Verify your email with the code: <strong>${verificationCode}</strong>!</p>`,
   });
 
-  console.log("resend", d);
+  if (resendResponse.error) {
+    throw new Error("Failed to send verification email via Resend", {
+      cause: resendResponse,
+    });
+  }
 }
