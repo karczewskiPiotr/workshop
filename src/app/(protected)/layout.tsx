@@ -1,13 +1,12 @@
 import validateRequest from "@/api/auth/validate-request";
 import { redirect } from "next/navigation";
+import { PropsWithChildren } from "react";
 
-export default async function DashboardPage() {
+type Props = Readonly<PropsWithChildren>;
+
+export default async function ProtectedLayout(props: Props) {
   const { user } = await validateRequest();
   if (!user) return redirect("/login");
 
-  return (
-    <main>
-      <h1>Dashboard</h1>
-    </main>
-  );
+  return <>{props.children}</>;
 }

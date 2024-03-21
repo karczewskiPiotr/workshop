@@ -2,49 +2,44 @@
 
 import { lucia } from "@/auth";
 import { db } from "@/db";
-import { insertUserSchema, signups, users } from "@/db/schema";
+import { insertUserSchema, users } from "@/db/schema";
 import { eq } from "drizzle-orm";
+import { isRedirectError } from "next/dist/client/components/redirect";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { Argon2id } from "oslo/password";
 
-const requestSchema = insertUserSchema.pick({ username: true, password: true });
+const requestSchema = insertUserSchema.pick({ email: true, password: true });
 
 export default async function login(_prevState: any, formData: FormData) {
-  const username = formData.get("username");
+  const email = formData.get("email");
   const password = formData.get("password");
 
-  const user = requestSchema.safeParse({ username, password });
-  if (!user.success) return { errors: user.error.errors.map((e) => e.message) };
+  console.log(email, password);
 
-  let redirectPath = "/";
+  const user = requestSchema.safeParse({ email, password });
+  if (!user.success) return { errors: user.error.errors.map((e) => e.message) };
 
   try {
     const [existingUser] = await db
       .select({
         id: users.id,
+        emailVerified: users.emailVerified,
         password: users.password,
-        role: users.role,
-        status: signups.status,
       })
       .from(users)
-      .leftJoin(signups, eq(users.id, signups.userId))
-      .where(eq(users.username, user.data.username))
+      .where(eq(users.email, user.data.email))
       .limit(1);
 
     if (!existingUser) {
-      return { errors: ["Incorrect username or password"] };
-    } else if (existingUser.status === "pending") {
-      return { errors: ["Registration is pending verification"] };
-    } else if (existingUser.status === "rejected") {
-      return { errors: ["Registration has been rejected"] };
+      return { errors: ["Incorrect email or password"] };
     }
 
     const validPassword = await new Argon2id().verify(
       existingUser.password,
       user.data.password
     );
-    if (!validPassword) return { errors: ["Incorrect username or password"] };
+    if (!validPassword) return { errors: ["Incorrect email or password"] };
 
     const session = await lucia.createSession(existingUser.id, {});
     const sessionCookie = lucia.createSessionCookie(session.id);
@@ -54,12 +49,13 @@ export default async function login(_prevState: any, formData: FormData) {
       sessionCookie.attributes
     );
 
-    redirectPath = existingUser.role === "admin" ? "/users" : "/dashboard";
-  } catch (error) {
+    if (!existingUser.emailVerified) return redirect("/email-verification");
+  } catch (error: unknown) {
+    if (isRedirectError(error)) throw error;
+
     console.error(error);
     return { errors: ["Something went wrong"] };
   }
 
-  // TODO: Redirect to desired pages based on role
-  return redirect(redirectPath);
+  return redirect("/dashboard");
 }

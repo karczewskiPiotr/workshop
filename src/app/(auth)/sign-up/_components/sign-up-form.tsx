@@ -1,6 +1,6 @@
 "use client";
 
-import requestAccount from "@/api/auth/request-account";
+import requestAccount from "@/api/auth/signup";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -11,8 +11,14 @@ export default function SignUpForm() {
 
   return (
     <form className="space-y-2" action={formAction}>
-      <Label htmlFor="username">Username</Label>
-      <Input name="username" id="username" type="text" />
+      <Label htmlFor="email">Email</Label>
+      <Input name="email" id="email" type="email" />
+      <br />
+      <Label htmlFor="name">Name</Label>
+      <Input name="name" id="name" type="text" />
+      <br />
+      <Label htmlFor="surname">Surname</Label>
+      <Input name="surname" id="surname" type="text" />
       <br />
       <Label htmlFor="password">Password</Label>
       <Input type="password" name="password" id="password" />
