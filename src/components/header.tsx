@@ -19,11 +19,6 @@ export default async function Header() {
         >
           Dashboard
         </Link>
-        {user?.role === "admin" && (
-          <Link href="/users" className={buttonVariants({ variant: "ghost" })}>
-            Users
-          </Link>
-        )}
       </nav>
       <ModeToggle />
       {user ? (

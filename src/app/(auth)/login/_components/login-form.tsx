@@ -11,8 +11,8 @@ export default function SignUpForm() {
 
   return (
     <form className="space-y-2" action={formAction}>
-      <Label htmlFor="username">Username</Label>
-      <Input name="username" id="username" type="text" />
+      <Label htmlFor="email">Email</Label>
+      <Input name="email" id="email" type="text" />
       <br />
       <Label htmlFor="password">Password</Label>
       <Input type="password" name="password" id="password" />
