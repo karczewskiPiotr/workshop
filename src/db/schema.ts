@@ -35,6 +35,24 @@ export const emailVerificationCodes = pgTable("email_verification_code", {
   }).notNull(),
 });
 
+export const garages = pgTable("garage", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  name: text("name").notNull(),
+});
+
+export const employees = pgTable("employee", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: text("user_id")
+    .references(() => users.id)
+    .notNull(),
+  garageId: uuid("garage_id")
+    .references(() => garages.id)
+    .notNull(),
+  status: text("status", { enum: ["pending", "active"] })
+    .notNull()
+    .default("pending"),
+});
+
 export type User = typeof users.$inferSelect;
 export const insertUserSchema = createInsertSchema(users, {
   email: (schema) => schema.email.email(),
@@ -60,3 +78,14 @@ export const insertEmailVerificationCodeSchema = createInsertSchema(
     email: (schema) => schema.email.email(),
   }
 );
+
+export type Garage = typeof garages.$inferSelect;
+export const insertGarageSchema = createInsertSchema(garages, {
+  name: (schema) =>
+    schema.name.min(2, {
+      message: "Garage name must contain at least 2 characters",
+    }),
+});
+
+export type Employee = typeof employees.$inferSelect;
+export const insertEmployeeSchema = createInsertSchema(employees);
