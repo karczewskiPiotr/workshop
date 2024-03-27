@@ -1,7 +1,7 @@
 import { db } from "@/db";
 import {
   User,
-  emailVerificationCode,
+  EmailVerificationCode,
   emailVerificationCodes,
 } from "@/db/schema";
 import { and, eq } from "drizzle-orm";
@@ -10,7 +10,7 @@ import { isWithinExpirationDate } from "oslo";
 export default async function verifyEmailVerificationCode(
   userId: User["id"],
   email: User["email"],
-  code: emailVerificationCode["code"]
+  code: EmailVerificationCode["code"]
 ) {
   return await db.transaction(async (tx) => {
     const [databaseCode] = await tx

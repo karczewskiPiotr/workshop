@@ -53,7 +53,7 @@ export const insertUserSchema = createInsertSchema(users, {
 });
 export const selectUserSchema = createSelectSchema(users);
 
-export type emailVerificationCode = typeof emailVerificationCodes.$inferSelect;
+export type EmailVerificationCode = typeof emailVerificationCodes.$inferSelect;
 export const insertEmailVerificationCodeSchema = createInsertSchema(
   emailVerificationCodes,
   {
