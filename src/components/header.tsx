@@ -17,7 +17,7 @@ export default async function Header() {
           href="/dashboard"
           className={buttonVariants({ variant: "ghost" })}
         >
-          Dashboard
+          {user?.name} {user?.surname}
         </Link>
       </nav>
       <ModeToggle />
