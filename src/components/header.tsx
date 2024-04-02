@@ -8,7 +8,7 @@ export default async function Header() {
   const { user } = await validateRequest();
 
   return (
-    <header className="mb-4 flex space-x-4 items-center px-2 py-4 border-b">
+    <header className="flex space-x-4 items-center px-2 py-4 border-b">
       <nav className="mr-auto">
         <Link href="/" className={buttonVariants({ variant: "ghost" })}>
           Home

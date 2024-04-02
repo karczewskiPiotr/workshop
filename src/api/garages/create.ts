@@ -20,7 +20,7 @@ export default async function createGarage(
     await db.transaction(async (tx) => {
       const [{ id }] = await tx
         .insert(garages)
-        .values({ name: garage.data.name })
+        .values({ name: garage.data.name, owner: userId })
         .returning();
 
       await tx

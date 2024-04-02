@@ -38,6 +38,9 @@ export const emailVerificationCodes = pgTable("email_verification_code", {
 export const garages = pgTable("garage", {
   id: uuid("id").primaryKey().defaultRandom(),
   name: text("name").notNull(),
+  owner: text("owner")
+    .references(() => users.id)
+    .notNull(),
 });
 
 export const employees = pgTable("employee", {

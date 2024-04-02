@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 export default function RootLayout(props: Props) {
   return (
     <html lang="en" className={inter.className} suppressHydrationWarning>
-      <body className={"min-h-screen bg-background antialiased font-sans"}>
+      <body className="min-h-screen bg-background antialiased font-sans flex flex-col">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

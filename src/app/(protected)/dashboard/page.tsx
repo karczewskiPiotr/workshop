@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { redirect } from "next/navigation";
 import Garages from "./_components/garages";
 import { Suspense } from "react";
+import Employments from "./_components/employments";
 
 export default async function DashboardPage() {
   const { user } = await validateRequest();
@@ -18,14 +19,9 @@ export default async function DashboardPage() {
           <Suspense fallback={<p>Loading...</p>}>
             <Garages userId={user.id} />
           </Suspense>
-          <Card>
-            <CardHeader>
-              <CardTitle>Invites</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p>Card Content</p>
-            </CardContent>
-          </Card>
+          <Suspense fallback={<p>Loading...</p>}>
+            <Employments userId={user.id} />
+          </Suspense>
         </div>
         <Card className="flex-1">
           <CardHeader>

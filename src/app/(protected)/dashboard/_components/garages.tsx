@@ -1,6 +1,6 @@
 import createGarage from "@/api/garages/create";
-import getAllGarages from "@/api/garages/get-all";
-import { Button } from "@/components/ui/button";
+import getGarages from "@/api/garages/get-garages";
+import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -21,7 +21,7 @@ import { Label } from "@/components/ui/label";
 import { User } from "@/db/schema";
 
 export default async function Garages(props: { userId: User["id"] }) {
-  const garages = await getAllGarages(props.userId);
+  const garages = await getGarages(props.userId);
 
   return (
     <Card>
@@ -31,7 +31,14 @@ export default async function Garages(props: { userId: User["id"] }) {
       <CardContent>
         <ul>
           {garages.map((garage) => (
-            <li key={garage.id}>{garage.name}</li>
+            <li key={garage.id}>
+              <a
+                href={`/garages/${garage.id}`}
+                className={buttonVariants({ variant: "link" })}
+              >
+                {garage.name}
+              </a>
+            </li>
           ))}
         </ul>
       </CardContent>
