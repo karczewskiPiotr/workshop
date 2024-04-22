@@ -56,6 +56,18 @@ export const employees = pgTable("employee", {
     .default("pending"),
 });
 
+export const clients = pgTable("client", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  garageId: uuid("garage_id")
+    .references(() => garages.id)
+    .notNull(),
+  name: text("name").notNull(),
+  surname: text("surname").notNull(),
+  company: text("company"),
+  email: text("email"),
+  phone: text("phone"),
+});
+
 export type User = typeof users.$inferSelect;
 export const insertUserSchema = createInsertSchema(users, {
   email: (schema) => schema.email.email(),
@@ -92,3 +104,16 @@ export const insertGarageSchema = createInsertSchema(garages, {
 
 export type Employee = typeof employees.$inferSelect;
 export const insertEmployeeSchema = createInsertSchema(employees);
+
+export type Clinet = typeof clients.$inferSelect;
+export const insertClientSchema = createInsertSchema(clients, {
+  name: (schema) =>
+    schema.name.min(2, {
+      message: "Client name must contain at least 2 characters",
+    }),
+  surname: (schema) =>
+    schema.name.min(2, {
+      message: "Client surname must contain at least 2 characters",
+    }),
+  email: (schema) => schema.email.email().nullable(),
+});
