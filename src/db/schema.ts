@@ -68,6 +68,18 @@ export const clients = pgTable("client", {
   phone: text("phone"),
 });
 
+export const cars = pgTable("car", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  clientId: uuid("client_id")
+    .references(() => clients.id)
+    .notNull(),
+  make: text("make").notNull(),
+  model: text("model").notNull(),
+  licensePlate: text("license_plate").notNull(),
+  vinNumber: text("vin_number").notNull(),
+  fleet: boolean("fleet").notNull().default(false),
+});
+
 export type User = typeof users.$inferSelect;
 export const insertUserSchema = createInsertSchema(users, {
   email: (schema) => schema.email.email(),
@@ -116,4 +128,25 @@ export const insertClientSchema = createInsertSchema(clients, {
       message: "Client surname must contain at least 2 characters",
     }),
   email: (schema) => schema.email.email().nullable(),
+});
+
+export type Car = typeof cars.$inferSelect;
+export const insertCarSchema = createInsertSchema(cars, {
+  make: (schema) =>
+    schema.make.min(2, {
+      message: "Car make must contain at least 2 characters",
+    }),
+  model: (schema) =>
+    schema.model.min(2, {
+      message: "Car model must contain at least 2 characters",
+    }),
+  licensePlate: (schema) =>
+    schema.licensePlate.min(2, {
+      message: "Car license plate must contain at least 2 characters",
+    }),
+  vinNumber: (schema) =>
+    schema.vinNumber.min(2, {
+      message: "Car vin number must contain at least 2 characters",
+    }),
+  fleet: (schema) => schema.fleet.default(false),
 });

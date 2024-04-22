@@ -34,7 +34,6 @@ export default async function createClient(
     await db.insert(clients).values(client.data);
   } catch (error) {
     console.log(error);
-
     return { errors: ["Could not create client"] };
   }
 

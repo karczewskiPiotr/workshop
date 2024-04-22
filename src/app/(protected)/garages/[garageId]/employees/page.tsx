@@ -52,7 +52,7 @@ export default async function EmployeesPage({
               </SelectTrigger>
               <SelectContent>
                 {potentialEmployees.map((employee) => (
-                  <SelectItem value={employee.id}>
+                  <SelectItem key={employee.id} value={employee.id}>
                     {employee.name} {employee.surname}
                   </SelectItem>
                 ))}
