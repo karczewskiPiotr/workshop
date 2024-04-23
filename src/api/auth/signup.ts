@@ -5,10 +5,8 @@ import { insertUserSchema, users } from "@/db/schema";
 import { generateId } from "lucia";
 import { redirect } from "next/navigation";
 import { Argon2id } from "oslo/password";
-import generateEmailVerificationCode from "./generate-email-verification-code";
 import { lucia } from "@/auth";
 import { cookies } from "next/headers";
-import { resend } from "@/resend";
 import sendEmailVerificationcode from "./send-email-verification-code";
 
 const requestSchema = insertUserSchema.pick({
