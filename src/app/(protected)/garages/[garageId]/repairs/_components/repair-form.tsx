@@ -52,7 +52,6 @@ const formSchema = insertRepairSchema.pick({
 
 export default function RepairForm(props: Props) {
   const formRef = useRef<HTMLFormElement>(null);
-  const submitBtnRef = useRef<HTMLButtonElement>(null);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -181,9 +180,7 @@ export default function RepairForm(props: Props) {
             </FormItem>
           )}
         />
-        <Button ref={submitBtnRef} type="submit">
-          Add a repair
-        </Button>
+        <Button type="submit">Add a repair</Button>
         {state?.errors.map((error, index) => (
           <p key={index}>{error}</p>
         ))}
