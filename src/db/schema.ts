@@ -80,6 +80,23 @@ export const cars = pgTable("car", {
   fleet: boolean("fleet").notNull().default(false),
 });
 
+export const repairs = pgTable("repair", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  carId: uuid("car_id")
+    .references(() => cars.id)
+    .notNull(),
+  userId: text("user_id")
+    .references(() => users.id)
+    .notNull(),
+  garageId: uuid("garage_id")
+    .references(() => garages.id)
+    .notNull(),
+  description: text("description").notNull(),
+  servicedAt: timestamp("serviced_at", { mode: "date", withTimezone: true })
+    .defaultNow()
+    .notNull(),
+});
+
 export type User = typeof users.$inferSelect;
 export const insertUserSchema = createInsertSchema(users, {
   email: (schema) => schema.email.email(),
@@ -150,3 +167,6 @@ export const insertCarSchema = createInsertSchema(cars, {
     }),
   fleet: (schema) => schema.fleet.default(false),
 });
+
+export type Repair = typeof repairs.$inferSelect;
+export const insertRepairSchema = createInsertSchema(repairs);
