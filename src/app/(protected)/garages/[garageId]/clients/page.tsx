@@ -1,3 +1,7 @@
+import createClient from "@/api/clients/create-client";
+import getClients from "@/api/clients/get-clients";
+import getGarage from "@/api/garages/get-garage";
+import Dashboard, { DashboardBreadcrumb } from "@/components/dashboard";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -7,21 +11,27 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
-
-import createClient from "@/api/clients/create-client";
 import { Input } from "@/components/ui/input";
-import getClients from "@/api/clients/get-clients";
+import { Label } from "@/components/ui/label";
+import getGarageDashboardItems from "@/lib/getGarageDashboardItems";
 
 export default async function ClientsPage({
   params,
 }: {
   params: { garageId: string };
 }) {
+  const [garage] = await getGarage(params.garageId);
   const clients = await getClients(params.garageId);
 
+  const items = getGarageDashboardItems(params.garageId, "clients");
+  const breadcrumbs: DashboardBreadcrumb[] = [
+    { label: "Dashboard", link: "/dashboard" },
+    { label: garage.name, link: `/garages/${params.garageId}` },
+    { label: "Clients" },
+  ];
+
   return (
-    <>
+    <Dashboard items={items} breadcrumbs={breadcrumbs}>
       <h1>Clients</h1>
       <Dialog>
         <DialogTrigger asChild>
@@ -59,6 +69,6 @@ export default async function ClientsPage({
           </li>
         ))}
       </ul>
-    </>
+    </Dashboard>
   );
 }

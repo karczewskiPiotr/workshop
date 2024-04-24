@@ -1,5 +1,11 @@
 import getEmployments from "@/api/employees/get-employment";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { User } from "@/db/schema";
 import Employment from "./employment";
 
@@ -10,6 +16,7 @@ export default async function Employments(props: { userId: User["id"] }) {
     <Card>
       <CardHeader>
         <CardTitle>Employments</CardTitle>
+        <CardDescription>New employments will show up here.</CardDescription>
       </CardHeader>
       <CardContent>
         <ul>

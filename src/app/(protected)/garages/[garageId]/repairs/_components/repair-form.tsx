@@ -4,7 +4,6 @@ import getGarageCars from "@/api/cars/get-garage-cars";
 import createRepair from "@/api/repairs/create-repair";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
   Popover,
@@ -20,8 +19,7 @@ import {
 } from "@/components/ui/select";
 import { Garage, User, insertRepairSchema } from "@/db/schema";
 import { cn } from "@/lib/utils";
-import { CalendarIcon } from "@radix-ui/react-icons";
-import { FormEvent, useRef, useState } from "react";
+import { FormEvent, useRef } from "react";
 import { useFormState } from "react-dom";
 import { format, formatISO } from "date-fns";
 import { useForm } from "react-hook-form";
@@ -37,6 +35,7 @@ import {
 } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Textarea } from "@/components/ui/textarea";
+import { CalendarIcon } from "lucide-react";
 
 type Props = {
   garageId: Garage["id"];

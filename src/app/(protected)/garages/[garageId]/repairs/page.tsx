@@ -1,6 +1,8 @@
 import validateRequest from "@/api/auth/validate-request";
 import getGarageCars from "@/api/cars/get-garage-cars";
+import getGarage from "@/api/garages/get-garage";
 import getGarageRepairs from "@/api/repairs/get-garage-repairs";
+import Dashboard, { DashboardBreadcrumb } from "@/components/dashboard";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -10,9 +12,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import getGarageDashboardItems from "@/lib/getGarageDashboardItems";
+import { format } from "date-fns";
 import { redirect } from "next/navigation";
 import RepairForm from "./_components/repair-form";
-import { format } from "date-fns";
 
 export default async function RepairsPage({
   params,
@@ -22,11 +25,19 @@ export default async function RepairsPage({
   const { user } = await validateRequest();
   if (!user) return redirect("/login");
 
+  const [garage] = await getGarage(params.garageId);
   const repairs = await getGarageRepairs(params.garageId);
   const cars = await getGarageCars(params.garageId);
 
+  const items = getGarageDashboardItems(params.garageId, "repairs");
+  const breadcrumbs: DashboardBreadcrumb[] = [
+    { label: "Dashboard", link: "/dashboard" },
+    { label: garage.name, link: `/garages/${params.garageId}` },
+    { label: "Repairs" },
+  ];
+
   return (
-    <>
+    <Dashboard items={items} breadcrumbs={breadcrumbs}>
       <h1>Repairs</h1>
       <Dialog>
         <DialogTrigger asChild>
@@ -51,6 +62,6 @@ export default async function RepairsPage({
           </li>
         ))}
       </ul>
-    </>
+    </Dashboard>
   );
 }

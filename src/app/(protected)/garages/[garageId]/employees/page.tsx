@@ -1,4 +1,8 @@
+import createEmployee from "@/api/employees/create-employee";
 import getEmployees from "@/api/employees/get-employees";
+import getPotentialEmployees from "@/api/employees/get-potential-employess";
+import getGarage from "@/api/garages/get-garage";
+import Dashboard, { DashboardBreadcrumb } from "@/components/dashboard";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -11,24 +15,31 @@ import {
 import { Label } from "@/components/ui/label";
 import {
   Select,
-  SelectTrigger,
-  SelectValue,
   SelectContent,
   SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from "@/components/ui/select";
-import getPotentialEmployees from "@/api/employees/get-potential-employess";
-import createEmployee from "@/api/employees/create-employee";
+import getGarageDashboardItems from "@/lib/getGarageDashboardItems";
 
 export default async function EmployeesPage({
   params,
 }: {
   params: { garageId: string };
 }) {
+  const [garage] = await getGarage(params.garageId);
   const employees = await getEmployees(params.garageId);
   const potentialEmployees = await getPotentialEmployees(params.garageId);
 
+  const items = getGarageDashboardItems(params.garageId, "employees");
+  const breadcrumbs: DashboardBreadcrumb[] = [
+    { label: "Dashboard", link: "/dashboard" },
+    { label: garage.name, link: `/garages/${params.garageId}` },
+    { label: "Employees" },
+  ];
+
   return (
-    <>
+    <Dashboard items={items} breadcrumbs={breadcrumbs}>
       <h1>Employees</h1>
       <Dialog>
         <DialogTrigger asChild>
@@ -69,6 +80,6 @@ export default async function EmployeesPage({
           </li>
         ))}
       </ul>
-    </>
+    </Dashboard>
   );
 }

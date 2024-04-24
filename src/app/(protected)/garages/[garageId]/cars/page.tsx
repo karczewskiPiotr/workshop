@@ -9,10 +9,13 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 
-import { Input } from "@/components/ui/input";
-import getClients from "@/api/clients/get-clients";
-import getGarageCars from "@/api/cars/get-garage-cars";
 import createCar from "@/api/cars/create-car";
+import getGarageCars from "@/api/cars/get-garage-cars";
+import getClients from "@/api/clients/get-clients";
+import getGarage from "@/api/garages/get-garage";
+import Dashboard, { DashboardBreadcrumb } from "@/components/dashboard";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -20,18 +23,26 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Checkbox } from "@/components/ui/checkbox";
+import getGarageDashboardItems from "@/lib/getGarageDashboardItems";
 
 export default async function CarsPage({
   params,
 }: {
   params: { garageId: string };
 }) {
+  const [garage] = await getGarage(params.garageId);
   const cars = await getGarageCars(params.garageId);
   const clients = await getClients(params.garageId);
 
+  const items = getGarageDashboardItems(params.garageId, "cars");
+  const breadcrumbs: DashboardBreadcrumb[] = [
+    { label: "Dashboard", link: "/dashboard" },
+    { label: garage.name, link: `/garages/${params.garageId}` },
+    { label: "Cars" },
+  ];
+
   return (
-    <>
+    <Dashboard items={items} breadcrumbs={breadcrumbs}>
       <h1>Cars</h1>
       <Dialog>
         <DialogTrigger asChild>
@@ -84,6 +95,6 @@ export default async function CarsPage({
           </li>
         ))}
       </ul>
-    </>
+    </Dashboard>
   );
 }

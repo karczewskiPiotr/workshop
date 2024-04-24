@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
-import Header from "@/components/header";
 import { PropsWithChildren } from "react";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 type Props = Readonly<PropsWithChildren>;
 
@@ -16,18 +16,19 @@ export const metadata: Metadata = {
 
 export default function RootLayout(props: Props) {
   return (
-    <html lang="en" className={inter.className} suppressHydrationWarning>
-      <body className="min-h-screen bg-background antialiased font-sans flex flex-col">
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <Header />
-          {props.children}
-        </ThemeProvider>
-      </body>
-    </html>
+    <TooltipProvider>
+      <html lang="en" className={inter.className} suppressHydrationWarning>
+        <body className="min-h-screen bg-background antialiased font-sans flex flex-col">
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            {props.children}
+          </ThemeProvider>
+        </body>
+      </html>
+    </TooltipProvider>
   );
 }

@@ -4,6 +4,7 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Card,
   CardContent,
+  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -27,6 +28,7 @@ export default async function Garages(props: { userId: User["id"] }) {
     <Card>
       <CardHeader>
         <CardTitle>Garages</CardTitle>
+        <CardDescription>Manage your garages</CardDescription>
       </CardHeader>
       <CardContent>
         <ul>
