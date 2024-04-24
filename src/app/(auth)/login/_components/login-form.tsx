@@ -33,6 +33,7 @@ export default function SignUpForm() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     mode: "onBlur",
+    defaultValues: { email: "", password: "" },
   });
 
   function submitForm(event: FormEvent<HTMLFormElement>) {
@@ -81,7 +82,7 @@ export default function SignUpForm() {
                   </Link>
                 </div>
                 <FormControl>
-                  <Input {...field} />
+                  <Input {...field} type="password" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
