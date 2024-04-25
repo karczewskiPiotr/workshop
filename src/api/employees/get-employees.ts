@@ -8,6 +8,7 @@ export default unstable_cache(
     return await db
       .select({
         id: employees.id,
+        userId: users.id,
         name: users.name,
         surname: users.surname,
         email: users.email,

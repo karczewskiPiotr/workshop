@@ -21,6 +21,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import getGarageDashboardItems from "@/lib/getGarageDashboardItems";
+import EmployeeList from "./_components/employee-list";
+import AddEmployeeDialog from "./_components/add-employee-dialog";
 
 export default async function EmployeesPage({
   params,
@@ -40,46 +42,17 @@ export default async function EmployeesPage({
 
   return (
     <Dashboard items={items} breadcrumbs={breadcrumbs}>
-      <h1>Employees</h1>
-      <Dialog>
-        <DialogTrigger asChild>
-          <Button variant="default">New employee</Button>
-        </DialogTrigger>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Add an employee</DialogTitle>
-            <DialogDescription>
-              This action will cadd an employee to the current garage.
-            </DialogDescription>
-          </DialogHeader>
-          <form
-            action={createEmployee.bind(null, params.garageId)}
-            className="space-y-4"
-          >
-            <Label htmlFor="userId">User</Label>
-            <Select name="userId">
-              <SelectTrigger>
-                <SelectValue placeholder="Select a verified email to display" />
-              </SelectTrigger>
-              <SelectContent>
-                {potentialEmployees.map((employee) => (
-                  <SelectItem key={employee.id} value={employee.id}>
-                    {employee.name} {employee.surname}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            <Button type="submit">Send employment proposal</Button>
-          </form>
-        </DialogContent>
-      </Dialog>
-      <ul>
-        {employees.map((employee) => (
-          <li key={employee.id}>
-            <pre>{JSON.stringify(employee, null, 2)}</pre>
-          </li>
-        ))}
-      </ul>
+      <EmployeeList
+        employees={employees}
+        owner={garage.owner}
+        addButton={
+          <AddEmployeeDialog
+            garageId={params.garageId}
+            potentialEmployees={potentialEmployees}
+            buttonProps={{ size: "sm", className: "ml-auto gap-1" }}
+          />
+        }
+      />
     </Dashboard>
   );
 }

@@ -143,7 +143,7 @@ export default async function Dashboard(props: Props) {
           <ModeToggle className="ml-auto" />
           <UserDropdown />
         </header>
-        <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8 lg:grid-cols-2 xl:grid-cols-2">
+        <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
           {props.children}
         </main>
       </div>
