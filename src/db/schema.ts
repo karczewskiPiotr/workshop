@@ -134,7 +134,7 @@ export const insertGarageSchema = createInsertSchema(garages, {
 export type Employee = typeof employees.$inferSelect;
 export const insertEmployeeSchema = createInsertSchema(employees);
 
-export type Clinet = typeof clients.$inferSelect;
+export type Client = typeof clients.$inferSelect;
 export const insertClientSchema = createInsertSchema(clients, {
   name: (schema) =>
     schema.name.min(2, {
