@@ -3,7 +3,10 @@ import { redirect } from "next/navigation";
 import Garages from "./_components/garages";
 import { Suspense } from "react";
 import Employments from "./_components/employments";
-import Dashboard, { DashboardNavItem } from "@/components/dashboard";
+import Dashboard, {
+  DashboardBreadcrumb,
+  DashboardNavItem,
+} from "@/components/dashboard";
 import { Home } from "lucide-react";
 
 export default async function DashboardPage() {
@@ -11,15 +14,12 @@ export default async function DashboardPage() {
   if (!user) return redirect("/login");
 
   const items: DashboardNavItem[] = [
-    {
-      label: "Dashboard",
-      link: `/dashboard`,
-      icon: Home,
-    },
+    { label: "Dashboard", link: `/dashboard`, icon: Home },
   ];
+  const breadcrumbs: DashboardBreadcrumb[] = [{ label: "Dashboard" }];
 
   return (
-    <Dashboard items={items}>
+    <Dashboard items={items} breadcrumbs={breadcrumbs}>
       <Suspense fallback={<p>Loading...</p>}>
         <Garages userId={user.id} />
       </Suspense>
