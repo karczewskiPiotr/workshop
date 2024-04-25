@@ -126,11 +126,13 @@ export default async function Dashboard(props: Props) {
                 <React.Fragment key={`breadcrumb_${breadcrumb.label}`}>
                   <BreadcrumbItem>
                     {breadcrumb.link ? (
-                      <BreadcrumbLink asChild>
+                      <BreadcrumbLink asChild className="capitalize">
                         <Link href={breadcrumb.link}>{breadcrumb.label}</Link>
                       </BreadcrumbLink>
                     ) : (
-                      <BreadcrumbPage>{breadcrumb.label}</BreadcrumbPage>
+                      <BreadcrumbPage className="capitalize">
+                        {breadcrumb.label}
+                      </BreadcrumbPage>
                     )}
                   </BreadcrumbItem>
                   {index !== length - 1 && <BreadcrumbSeparator />}
