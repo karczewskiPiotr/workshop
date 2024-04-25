@@ -1,11 +1,11 @@
 "use server";
 
 import { db } from "@/db";
-import { cars, insertCarSchema } from "@/db/schema";
+import { Car, cars, insertCarSchema } from "@/db/schema";
+import { eq } from "drizzle-orm";
 import { revalidateTag } from "next/cache";
 
 const requestSchema = insertCarSchema.pick({
-  clientId: true,
   make: true,
   model: true,
   licensePlate: true,
@@ -13,9 +13,8 @@ const requestSchema = insertCarSchema.pick({
   fleet: true,
 });
 
-export default async function createCar(formData: FormData) {
+export default async function updateCar(carId: Car["id"], formData: FormData) {
   const car = requestSchema.safeParse({
-    clientId: formData.get("clientId"),
     make: formData.get("make"),
     model: formData.get("model"),
     licensePlate: formData.get("licensePlate"),
@@ -28,7 +27,7 @@ export default async function createCar(formData: FormData) {
   }
 
   try {
-    await db.insert(cars).values(car.data);
+    await db.update(cars).set(car.data).where(eq(cars.id, carId));
   } catch (error) {
     console.log(error);
     return { errors: ["Could not create car"] };

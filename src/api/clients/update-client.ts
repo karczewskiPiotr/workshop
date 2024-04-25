@@ -37,4 +37,5 @@ export default async function updateClient(
   }
 
   revalidateTag("clients");
+  revalidateTag("cars");
 }
