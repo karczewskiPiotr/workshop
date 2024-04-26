@@ -1,8 +1,8 @@
 "use server";
 
 import { db } from "@/db";
-import { Garage, repairs } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import { Garage, cars, clients, repairs, users } from "@/db/schema";
+import { and, eq, isNotNull } from "drizzle-orm";
 import { unstable_cache } from "next/cache";
 
 export default unstable_cache(
@@ -10,7 +10,10 @@ export default unstable_cache(
     return await db
       .select()
       .from(repairs)
-      .where(eq(repairs.garageId, garageId));
+      .innerJoin(cars, eq(repairs.carId, cars.id))
+      .innerJoin(clients, eq(cars.clientId, clients.id))
+      .innerJoin(users, eq(repairs.userId, users.id))
+      .where(and(eq(repairs.garageId, garageId)));
   },
   ["get-repairs"],
   { tags: ["repairs"] }

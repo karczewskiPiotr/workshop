@@ -34,4 +34,5 @@ export default async function updateCar(carId: Car["id"], formData: FormData) {
   }
 
   revalidateTag("cars");
+  revalidateTag("repairs");
 }

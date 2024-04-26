@@ -16,12 +16,11 @@ import getGarageDashboardItems from "@/lib/getGarageDashboardItems";
 import { format } from "date-fns";
 import { redirect } from "next/navigation";
 import RepairForm from "./_components/repair-form";
+import RepairsTable from "./_components/repairs-table";
 
-export default async function RepairsPage({
-  params,
-}: {
-  params: { garageId: string };
-}) {
+type Props = { params: { garageId: string } };
+
+export default async function RepairsPage({ params }: Props) {
   const { user } = await validateRequest();
   if (!user) return redirect("/login");
 
@@ -38,22 +37,7 @@ export default async function RepairsPage({
 
   return (
     <Dashboard items={items} breadcrumbs={breadcrumbs}>
-      <h1>Repairs</h1>
-      <Dialog>
-        <DialogTrigger asChild>
-          <Button variant="default">Log repair</Button>
-        </DialogTrigger>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Add a repair</DialogTitle>
-            <DialogDescription>
-              This action will add a repair.
-            </DialogDescription>
-          </DialogHeader>
-          <RepairForm cars={cars} garageId={params.garageId} userId={user.id} />
-        </DialogContent>
-      </Dialog>
-      <ul>
+      {/* <ul>
         {repairs.map((repair) => (
           <li key={repair.id}>
             <p>date: {JSON.stringify(repair.servicedAt)}</p>
@@ -61,7 +45,32 @@ export default async function RepairsPage({
             <pre>{JSON.stringify(repair, null, 2)}</pre>
           </li>
         ))}
-      </ul>
+      </ul> */}
+      <RepairsTable
+        repairs={repairs}
+        addButton={
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button variant="default" size="sm" className="ml-auto gap-1">
+                Log repair
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Add a repair</DialogTitle>
+                <DialogDescription>
+                  This action will add a repair.
+                </DialogDescription>
+              </DialogHeader>
+              <RepairForm
+                cars={cars}
+                garageId={params.garageId}
+                userId={user.id}
+              />
+            </DialogContent>
+          </Dialog>
+        }
+      />
     </Dashboard>
   );
 }
