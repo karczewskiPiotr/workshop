@@ -20,15 +20,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { cars } from "@/db/schema";
 import { format } from "date-fns";
-import {
-  ChevronsUpDown,
-  CircleCheck,
-  CircleX,
-  Ellipsis,
-  UnfoldVertical,
-} from "lucide-react";
+import { UnfoldVertical } from "lucide-react";
+import RepairDropdown from "./repair-dropdown";
 
 type Props = {
   repairs: Awaited<ReturnType<typeof getGarageRepairs>>;
@@ -57,8 +51,8 @@ export default function RepairsTable({ repairs, addButton }: Props) {
               <TableHead className="min-w-0 w-0"></TableHead>
             </TableRow>
           </TableHeader>
-          {repairs.map((repair) => (
-            <Collapsible key={repair.repair.id} asChild>
+          {repairs.map(({ repair, car, client, user }) => (
+            <Collapsible key={repair.id} asChild>
               <TableBody className="border-b">
                 <TableRow className="border-b-0">
                   <TableCell>
@@ -70,57 +64,55 @@ export default function RepairsTable({ repairs, addButton }: Props) {
                   </TableCell>
                   <TableCell>
                     <div className="font-medium">
-                      <div className="font-medium">{repair.car.make}</div>
+                      <div className="font-medium">{car.make}</div>
                       <div className="text-xs text-muted-foreground">
-                        {repair.car.model}
+                        {car.model}
                       </div>
                     </div>
                   </TableCell>
                   <TableCell className="max-md:hidden">
                     <div className="font-medium">
-                      <div className="font-medium">
-                        {repair.car.licensePlate}
-                      </div>
+                      <div className="font-medium">{car.licensePlate}</div>
                       <div className="text-xs text-muted-foreground">
-                        {repair.car.vinNumber}
+                        {car.vinNumber}
                       </div>
                     </div>
                   </TableCell>
                   <TableCell>
                     <div className="font-medium">
                       <div className="font-medium">
-                        {repair.client.name} {repair.client.surname}
+                        {client.name} {client.surname}
                       </div>
-                      {repair.car.fleet && (
+                      {car.fleet && (
                         <div className="text-xs text-muted-foreground">
-                          {repair.client.company}
+                          {client.company}
                         </div>
                       )}
                     </div>
                   </TableCell>
-                  <TableCell>{format(repair.repair.servicedAt, "P")}</TableCell>
+                  <TableCell>{format(repair.servicedAt, "P")}</TableCell>
                   <TableCell className="text-right">
-                    <Ellipsis className="h-4 w-4" />
+                    <RepairDropdown repair={repair} car={car} client={client} />
                   </TableCell>
                 </TableRow>
                 <CollapsibleContent asChild>
                   <TableRow>
                     <TableCell></TableCell>
                     <TableCell colSpan={4}>
-                      <p>{repair.repair.description}</p>
+                      <p>{repair.description}</p>
                       <div className="mt-2 flex gap-4">
                         <p className="text-xs">
                           <span className="text-muted-foreground font-medium">
                             Logged by:
                           </span>{" "}
-                          {repair.user.name} {repair.user.surname}
+                          {user.name} {user.surname}
                         </p>
-                        {repair.car.fleet && (
+                        {car.fleet && (
                           <p className="text-xs">
                             <span className="text-muted-foreground font-medium">
                               Part of company fleet:
                             </span>{" "}
-                            {repair.client.company}
+                            {client.company}
                           </p>
                         )}
                       </div>

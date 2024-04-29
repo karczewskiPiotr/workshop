@@ -15,8 +15,9 @@ import {
 import getGarageDashboardItems from "@/lib/getGarageDashboardItems";
 import { format } from "date-fns";
 import { redirect } from "next/navigation";
-import RepairForm from "./_components/repair-form";
+import RepairForm from "./_components/create-repair-form";
 import RepairsTable from "./_components/repairs-table";
+import CreateRepairDialog from "./_components/create-repair-dialog";
 
 type Props = { params: { garageId: string } };
 
@@ -37,38 +38,14 @@ export default async function RepairsPage({ params }: Props) {
 
   return (
     <Dashboard items={items} breadcrumbs={breadcrumbs}>
-      {/* <ul>
-        {repairs.map((repair) => (
-          <li key={repair.id}>
-            <p>date: {JSON.stringify(repair.servicedAt)}</p>
-            <p>date: {format(repair.servicedAt, "Pp O")}</p>
-            <pre>{JSON.stringify(repair, null, 2)}</pre>
-          </li>
-        ))}
-      </ul> */}
       <RepairsTable
         repairs={repairs}
         addButton={
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button variant="default" size="sm" className="ml-auto gap-1">
-                Log repair
-              </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Add a repair</DialogTitle>
-                <DialogDescription>
-                  This action will add a repair.
-                </DialogDescription>
-              </DialogHeader>
-              <RepairForm
-                cars={cars}
-                garageId={params.garageId}
-                userId={user.id}
-              />
-            </DialogContent>
-          </Dialog>
+          <CreateRepairDialog
+            cars={cars}
+            userId={user.id}
+            garageId={params.garageId}
+          />
         }
       />
     </Dashboard>
