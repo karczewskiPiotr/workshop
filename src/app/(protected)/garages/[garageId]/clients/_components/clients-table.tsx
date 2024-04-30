@@ -39,6 +39,7 @@ export default async function ClientsTable({ clients, addButton }: Props) {
               <TableHead>Email</TableHead>
               <TableHead>Phone</TableHead>
               <TableHead>Company</TableHead>
+              <TableHead className="min-w-0 w-0"></TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
