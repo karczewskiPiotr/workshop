@@ -1,4 +1,3 @@
-import createEmployee from "@/api/employees/create-employee";
 import getPotentialEmployees from "@/api/employees/get-potential-employess";
 import { Button } from "@/components/ui/button";
 import {
@@ -9,17 +8,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Garage } from "@/db/schema";
 import { Plus } from "lucide-react";
 import { ComponentPropsWithoutRef } from "react";
+import NewEmployeeForm from "./new-employee-form";
 
 type Props = {
   potentialEmployees: Awaited<ReturnType<typeof getPotentialEmployees>>;
@@ -47,25 +39,10 @@ export default function AddEmployeeDialog({
             This action will cadd an employee to the current garage.
           </DialogDescription>
         </DialogHeader>
-        <form
-          action={createEmployee.bind(null, garageId)}
-          className="space-y-4"
-        >
-          <Label htmlFor="userId">User</Label>
-          <Select name="userId">
-            <SelectTrigger>
-              <SelectValue placeholder="Select a verified email to display" />
-            </SelectTrigger>
-            <SelectContent>
-              {potentialEmployees.map((employee) => (
-                <SelectItem key={employee.id} value={employee.id}>
-                  {employee.name} {employee.surname}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          <Button type="submit">Send employment proposal</Button>
-        </form>
+        <NewEmployeeForm
+          garageId={garageId}
+          employeesPool={potentialEmployees}
+        />
       </DialogContent>
     </Dialog>
   );

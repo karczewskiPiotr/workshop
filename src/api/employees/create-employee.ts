@@ -11,6 +11,7 @@ const requestSchema = insertEmployeeSchema.pick({
 
 export default async function createEmployee(
   garageId: Garage["id"],
+  _formState: any,
   formData: FormData
 ) {
   const employee = requestSchema.safeParse({
