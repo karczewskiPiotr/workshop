@@ -99,7 +99,7 @@ export default function RepairsTable({ repairs, addButton }: Props) {
                   <TableRow>
                     <TableCell></TableCell>
                     <TableCell colSpan={4}>
-                      <p>{repair.description}</p>
+                      <p className="max-w-[80ch]">{repair.description}</p>
                       <div className="mt-2 flex gap-4">
                         <p className="text-xs">
                           <span className="text-muted-foreground font-medium">
