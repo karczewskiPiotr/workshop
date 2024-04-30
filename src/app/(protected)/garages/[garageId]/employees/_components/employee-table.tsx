@@ -1,8 +1,5 @@
-import Link from "next/link";
-import { Plus } from "lucide-react";
-
+import getEmployees from "@/api/employees/get-employees";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -18,10 +15,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import getEmployees from "@/api/employees/get-employees";
 import { Garage } from "@/db/schema";
-import RevokeAccessDialog from "./revoke-access-dialog";
-import validateRequest from "@/api/auth/validate-request";
+import EmployeeDropdown from "./employee-dropdown";
 
 type Props = {
   employees: Awaited<ReturnType<typeof getEmployees>>;
@@ -29,13 +24,11 @@ type Props = {
   addButton: React.ReactNode;
 };
 
-export default async function EmployeeList({
+export default async function EmployeeTable({
   employees,
   owner,
   addButton,
 }: Props) {
-  const { user } = await validateRequest();
-
   return (
     <Card className="xl:col-span-2">
       <CardHeader className="flex flex-row items-center">
@@ -54,7 +47,7 @@ export default async function EmployeeList({
               <TableHead>Employee</TableHead>
               <TableHead>Role</TableHead>
               <TableHead>Status</TableHead>
-              <TableHead className="text-right">Actions</TableHead>
+              <TableHead className="min-w-0 w-0"></TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -77,14 +70,7 @@ export default async function EmployeeList({
                   </Badge>
                 </TableCell>
                 <TableCell className="text-right">
-                  <RevokeAccessDialog
-                    employeeId={employee.id}
-                    buttonProps={{
-                      size: "sm",
-                      variant: "destructive",
-                      disabled: employee.userId === owner || user!.id !== owner,
-                    }}
-                  />
+                  <EmployeeDropdown employeeId={employee.id} />
                 </TableCell>
               </TableRow>
             ))}

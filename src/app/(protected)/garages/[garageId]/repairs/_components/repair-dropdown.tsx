@@ -16,9 +16,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Repair, cars } from "@/db/schema";
-import { Ellipsis, Plus } from "lucide-react";
-import RepairForm from "./create-repair-form";
+import { Ellipsis } from "lucide-react";
 import UpdateRepairForm from "./update-repair-form";
 import getGarageRepairs from "@/api/repairs/get-garage-repairs";
 

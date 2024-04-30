@@ -13,23 +13,33 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Employee } from "@/db/schema";
-import { ComponentPropsWithoutRef } from "react";
+import { Ellipsis } from "lucide-react";
 
 type Props = {
   employeeId: Employee["id"];
-  buttonProps?: ComponentPropsWithoutRef<typeof Button>;
 };
-
-export default function RevokeAccessDialog({
-  employeeId,
-  buttonProps = {},
-}: Props) {
+export default function EmployeeDropdown({ employeeId }: Props) {
   return (
     <AlertDialog>
-      <AlertDialogTrigger asChild>
-        <Button {...buttonProps}>Revoke access</Button>
-      </AlertDialogTrigger>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button size="sm" variant="ghost">
+            <Ellipsis className="h-4 w-4" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <AlertDialogTrigger asChild>
+            <DropdownMenuItem>Revoke access</DropdownMenuItem>
+          </AlertDialogTrigger>
+        </DropdownMenuContent>
+      </DropdownMenu>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Are you sure?</AlertDialogTitle>
