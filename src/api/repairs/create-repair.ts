@@ -28,15 +28,19 @@ export default async function createRepair(
   });
 
   if (!repair.success) {
-    return { errors: repair.error.errors.map((e) => e.message) };
+    return {
+      success: false,
+      errors: repair.error.errors.map((e) => e.message),
+    };
   }
 
   try {
     await db.insert(repairs).values(repair.data);
+
+    revalidateTag("repairs");
+    return { success: true, errors: [] };
   } catch (error) {
     console.log(error);
-    return { errors: ["Could not create repair"] };
+    return { success: false, errors: ["Could not create repair"] };
   }
-
-  revalidateTag("repairs");
 }

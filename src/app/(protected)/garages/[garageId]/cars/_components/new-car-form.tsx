@@ -69,7 +69,7 @@ export default function NewCarForm({ clients, closeDialog }: Props) {
     event.preventDefault();
     form.handleSubmit((data) => {
       const formData = new FormData(formRef.current!);
-      formData.append("clientId", data.clientId);
+      formData.set("clientId", data.clientId);
       formAction(formData);
     })(event);
   }
