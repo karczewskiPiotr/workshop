@@ -2,7 +2,7 @@ import getClients from "@/api/clients/get-clients";
 import getGarage from "@/api/garages/get-garage";
 import Dashboard, { DashboardBreadcrumb } from "@/components/dashboard";
 import getGarageDashboardItems from "@/lib/getGarageDashboardItems";
-import ClientsList from "./_components/clients-list";
+import ClientsTable from "./_components/clients-table";
 import NewClientDialog from "./_components/new-client-dialog";
 
 export default async function ClientsPage({
@@ -22,7 +22,7 @@ export default async function ClientsPage({
 
   return (
     <Dashboard items={items} breadcrumbs={breadcrumbs}>
-      <ClientsList
+      <ClientsTable
         clients={clients}
         addButton={<NewClientDialog garageId={params.garageId} />}
       />

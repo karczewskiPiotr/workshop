@@ -14,14 +14,14 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import getClients from "@/api/clients/get-clients";
-import UpdateClientDialog from "./update-client-dialog";
+import ClientDropdown from "./client-dropdown";
 
 type Props = {
   clients: Awaited<ReturnType<typeof getClients>>;
   addButton: React.ReactNode;
 };
 
-export default async function ClientsList({ clients, addButton }: Props) {
+export default async function ClientsTable({ clients, addButton }: Props) {
   return (
     <Card className="xl:col-span-2">
       <CardHeader className="flex flex-row items-center">
@@ -53,7 +53,7 @@ export default async function ClientsList({ clients, addButton }: Props) {
                 <TableCell>{client.phone ?? "—"}</TableCell>
                 <TableCell>{client.company ?? "—"}</TableCell>
                 <TableCell className="text-right">
-                  <UpdateClientDialog
+                  <ClientDropdown
                     client={client}
                     buttonProps={{
                       size: "sm",
