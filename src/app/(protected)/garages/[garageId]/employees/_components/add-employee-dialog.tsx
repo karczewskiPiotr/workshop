@@ -1,3 +1,5 @@
+"use client";
+
 import getPotentialEmployees from "@/api/employees/get-potential-employess";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,7 +12,7 @@ import {
 } from "@/components/ui/dialog";
 import { Garage } from "@/db/schema";
 import { Plus } from "lucide-react";
-import { ComponentPropsWithoutRef } from "react";
+import { ComponentPropsWithoutRef, useState } from "react";
 import NewEmployeeForm from "./new-employee-form";
 
 type Props = {
@@ -24,8 +26,10 @@ export default function AddEmployeeDialog({
   potentialEmployees,
   buttonProps = {},
 }: Props) {
+  const [open, setOpen] = useState(false);
+
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant="default" {...buttonProps}>
           New employee
@@ -42,6 +46,7 @@ export default function AddEmployeeDialog({
         <NewEmployeeForm
           garageId={garageId}
           employeesPool={potentialEmployees}
+          closeDialog={() => setOpen(false)}
         />
       </DialogContent>
     </Dialog>

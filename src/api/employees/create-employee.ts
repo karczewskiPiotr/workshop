@@ -20,7 +20,10 @@ export default async function createEmployee(
   });
 
   if (!employee.success) {
-    return { errors: employee.error.errors.map((e) => e.message) };
+    return {
+      success: false,
+      errors: employee.error.errors.map((e) => e.message),
+    };
   }
 
   try {
@@ -28,9 +31,10 @@ export default async function createEmployee(
       userId: employee.data.userId,
       garageId: employee.data.garageId,
     });
-  } catch (error) {
-    return { errors: ["Could not create employee"] };
-  }
 
-  revalidateTag("employees");
+    revalidateTag("employees");
+    return { success: true, errors: [] };
+  } catch (error) {
+    return { success: false, errors: ["Could not create employee"] };
+  }
 }

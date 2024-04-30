@@ -4,6 +4,14 @@ import createEmployee from "@/api/employees/create-employee";
 import getPotentialEmployees from "@/api/employees/get-potential-employess";
 import { Button } from "@/components/ui/button";
 import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import {
   Form,
   FormControl,
   FormDescription,
@@ -12,17 +20,16 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Label } from "@/components/ui/label";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { Garage, insertEmployeeSchema } from "@/db/schema";
+import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FormEvent, useRef } from "react";
+import { CheckIcon, ChevronsUpDown } from "lucide-react";
+import { FormEvent, useEffect, useRef } from "react";
 import { useFormState } from "react-dom";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -30,27 +37,37 @@ import { z } from "zod";
 type Props = {
   garageId: Garage["id"];
   employeesPool: Awaited<ReturnType<typeof getPotentialEmployees>>;
+  closeDialog: () => void;
 };
 
 const formSchema = insertEmployeeSchema.pick({ userId: true });
 
-export default function NewEmployeeForm({ garageId, employeesPool }: Props) {
+export default function NewEmployeeForm({
+  garageId,
+  employeesPool,
+  closeDialog,
+}: Props) {
   const formRef = useRef<HTMLFormElement>(null);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
   const [state, formAction] = useFormState(
     createEmployee.bind(null, garageId),
-    { errors: [] }
+    { errors: [], success: false }
   );
 
   function submitForm(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    form.handleSubmit(() => {
+    form.handleSubmit((data) => {
       const formData = new FormData(formRef.current!);
+      formData.set("userId", data.userId);
       formAction(formData);
     })(event);
   }
+
+  useEffect(() => {
+    if (state.success === true) closeDialog();
+  }, [state.success]);
 
   return (
     <Form {...form}>
@@ -63,31 +80,76 @@ export default function NewEmployeeForm({ garageId, employeesPool }: Props) {
         <FormField
           control={form.control}
           name="userId"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel asChild>
-                <Label htmlFor="userId">User</Label>
-              </FormLabel>
-              <Select name={field.name} onValueChange={field.onChange}>
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select user to employ" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  {employeesPool.map((employee) => (
-                    <SelectItem key={employee.id} value={employee.id}>
-                      {employee.name} {employee.surname}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <FormDescription>
-                You can search for the user by name, surname and email.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
+          render={({ field }) => {
+            const employee = employeesPool.find((e) => e.id === field.value);
+
+            return (
+              <FormItem className="flex flex-col">
+                <FormLabel>User</FormLabel>
+                <Popover modal={true}>
+                  <PopoverTrigger asChild>
+                    <FormControl>
+                      <Button
+                        variant="outline"
+                        role="combobox"
+                        className={cn(
+                          "justify-between",
+                          !field.value && "text-muted-foreground"
+                        )}
+                      >
+                        {field.value
+                          ? employee?.name + " " + employee?.surname
+                          : "Select user"}
+                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                      </Button>
+                    </FormControl>
+                  </PopoverTrigger>
+                  <PopoverContent side="bottom" align="start" className="p-0">
+                    <Command>
+                      <CommandInput
+                        placeholder="Search user..."
+                        className="h-9"
+                      />
+                      <CommandEmpty>No framework found.</CommandEmpty>
+                      <CommandGroup>
+                        <CommandList>
+                          {employeesPool.map((employee) => (
+                            <CommandItem
+                              keywords={[
+                                employee.email,
+                                employee.name,
+                                employee.surname,
+                              ]}
+                              key={employee.id}
+                              value={employee.id}
+                              onSelect={() =>
+                                form.setValue("userId", employee.id)
+                              }
+                              className="flex justify-between"
+                            >
+                              <EmployeeItem employee={employee} />
+                              <CheckIcon
+                                className={cn(
+                                  "ml-auto h-4 w-4",
+                                  employee.id === field.value
+                                    ? "opacity-100"
+                                    : "opacity-0"
+                                )}
+                              />
+                            </CommandItem>
+                          ))}
+                        </CommandList>
+                      </CommandGroup>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
+                <FormDescription>
+                  You can search for the user by their name, surname or email.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            );
+          }}
         />
         <Button type="submit">Send employment proposal</Button>
         {state?.errors.map((error, index) => (
@@ -95,5 +157,20 @@ export default function NewEmployeeForm({ garageId, employeesPool }: Props) {
         ))}
       </form>
     </Form>
+  );
+}
+
+function EmployeeItem({
+  employee,
+}: {
+  employee: Awaited<ReturnType<typeof getPotentialEmployees>>[number];
+}) {
+  return (
+    <div className="flex flex-col items-start">
+      <div className="font-medium">
+        {employee.name} {employee.surname}
+      </div>
+      <div className="text-xs text-muted-foreground">{employee.email}</div>
+    </div>
   );
 }
