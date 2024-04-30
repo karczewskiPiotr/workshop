@@ -53,14 +53,7 @@ export default async function ClientsTable({ clients, addButton }: Props) {
                 <TableCell>{client.phone ?? "—"}</TableCell>
                 <TableCell>{client.company ?? "—"}</TableCell>
                 <TableCell className="text-right">
-                  <ClientDropdown
-                    client={client}
-                    buttonProps={{
-                      size: "sm",
-                      className: "ml-auto gap-1",
-                      variant: "outline",
-                    }}
-                  />
+                  <ClientDropdown client={client} />
                 </TableCell>
               </TableRow>
             ))}
