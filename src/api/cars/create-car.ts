@@ -13,7 +13,7 @@ const requestSchema = insertCarSchema.pick({
   fleet: true,
 });
 
-export default async function createCar(formData: FormData) {
+export default async function createCar(_formState: any, formData: FormData) {
   const car = requestSchema.safeParse({
     clientId: formData.get("clientId"),
     make: formData.get("make"),
@@ -24,15 +24,16 @@ export default async function createCar(formData: FormData) {
   });
 
   if (!car.success) {
-    return { errors: car.error.errors.map((e) => e.message) };
+    return { success: false, errors: car.error.errors.map((e) => e.message) };
   }
 
   try {
     await db.insert(cars).values(car.data);
+
+    revalidateTag("cars");
+    return { success: true, errors: [] };
   } catch (error) {
     console.log(error);
-    return { errors: ["Could not create car"] };
+    return { success: false, errors: ["Could not create car"] };
   }
-
-  revalidateTag("cars");
 }

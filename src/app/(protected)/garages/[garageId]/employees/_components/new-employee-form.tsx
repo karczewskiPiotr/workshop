@@ -110,7 +110,7 @@ export default function NewEmployeeForm({
                         placeholder="Search user..."
                         className="h-9"
                       />
-                      <CommandEmpty>No framework found.</CommandEmpty>
+                      <CommandEmpty>No users found.</CommandEmpty>
                       <CommandGroup>
                         <CommandList>
                           {employeesPool.map((employee) => (
