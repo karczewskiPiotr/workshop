@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/table";
 import getGarageCars from "@/api/cars/get-garage-cars";
 import { CircleCheck, CircleX } from "lucide-react";
-import UpdateCarDialog from "./update-car-dialog";
+import CarDropdown from "./car-dropdown";
 
 type Props = {
   cars: Awaited<ReturnType<typeof getGarageCars>>;
@@ -75,7 +75,7 @@ export default async function CarsTable({ cars, addButton }: Props) {
                   )}
                 </TableCell>
                 <TableCell className="text-right">
-                  <UpdateCarDialog
+                  <CarDropdown
                     car={car}
                     buttonProps={{
                       size: "sm",

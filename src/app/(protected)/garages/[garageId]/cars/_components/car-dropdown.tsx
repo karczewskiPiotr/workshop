@@ -37,7 +37,7 @@ type Props = {
   buttonProps?: ComponentPropsWithoutRef<typeof Button>;
 };
 
-export default function UpdateCarDialog({ car }: Props) {
+export default function CarDropdown({ car }: Props) {
   return (
     <AlertDialog>
       <Dialog>
