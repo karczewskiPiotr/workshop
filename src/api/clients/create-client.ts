@@ -15,6 +15,7 @@ const requestSchema = insertClientSchema.pick({
 
 export default async function createClient(
   garageId: Garage["id"],
+  _formState: any,
   formData: FormData
 ) {
   const client = requestSchema.safeParse({
@@ -27,15 +28,19 @@ export default async function createClient(
   });
 
   if (!client.success) {
-    return { errors: client.error.errors.map((e) => e.message) };
+    return {
+      success: false,
+      errors: client.error.errors.map((e) => e.message),
+    };
   }
 
   try {
     await db.insert(clients).values(client.data);
+
+    revalidateTag("clients");
+    return { success: true, errors: [] };
   } catch (error) {
     console.log(error);
-    return { errors: ["Could not create client"] };
+    return { success: false, errors: ["Could not create client"] };
   }
-
-  revalidateTag("clients");
 }

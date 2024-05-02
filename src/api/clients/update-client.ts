@@ -15,6 +15,7 @@ const requestSchema = insertClientSchema.pick({
 
 export default async function updateClient(
   id: Client["id"],
+  _formState: any,
   formData: FormData
 ) {
   const client = requestSchema.safeParse({
@@ -26,16 +27,20 @@ export default async function updateClient(
   });
 
   if (!client.success) {
-    return { errors: client.error.errors.map((e) => e.message) };
+    return {
+      success: false,
+      errors: client.error.errors.map((e) => e.message),
+    };
   }
 
   try {
     await db.update(clients).set(client.data).where(eq(clients.id, id));
+
+    revalidateTag("clients");
+    revalidateTag("cars");
+    return { success: true, errors: [] };
   } catch (error) {
     console.log(error);
-    return { errors: ["Could not update client"] };
+    return { success: false, errors: ["Could not update client"] };
   }
-
-  revalidateTag("clients");
-  revalidateTag("cars");
 }

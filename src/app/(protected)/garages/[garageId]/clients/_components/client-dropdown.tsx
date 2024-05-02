@@ -10,7 +10,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Client } from "@/db/schema";
-import UpdateClientForm from "./update-client-form";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -30,13 +29,18 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import deleteClient from "@/api/clients/delete-client";
+import ClientForm from "./client-form";
+import updateClient from "@/api/clients/update-client";
+import { useState } from "react";
 
 type Props = { client: Client };
 
 export default function ClientDropdown({ client }: Props) {
+  const [open, setOpen] = useState(false);
+
   return (
     <AlertDialog>
-      <Dialog>
+      <Dialog open={open} onOpenChange={setOpen}>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button size="sm" variant="ghost">
@@ -59,7 +63,13 @@ export default function ClientDropdown({ client }: Props) {
               This action will update client properties.
             </DialogDescription>
           </DialogHeader>
-          <UpdateClientForm client={client} />
+          <ClientForm
+            defaultValues={client}
+            onSuccess={() => setOpen(false)}
+            action={updateClient.bind(null, client.id)}
+          >
+            <Button type="submit">Update client</Button>
+          </ClientForm>
         </DialogContent>
         <AlertDialogContent>
           <AlertDialogHeader>
