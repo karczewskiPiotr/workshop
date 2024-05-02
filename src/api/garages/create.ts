@@ -8,13 +8,17 @@ const requestSchema = insertGarageSchema.pick({ name: true });
 
 export default async function createGarage(
   userId: User["id"],
+  _formState: any,
   formData: FormData
 ) {
   const garage = requestSchema.safeParse({
     name: formData.get("name"),
   });
   if (!garage.success)
-    return { errors: garage.error.errors.map((e) => e.message) };
+    return {
+      success: false,
+      errors: garage.error.errors.map((e) => e.message),
+    };
 
   try {
     await db.transaction(async (tx) => {
@@ -27,9 +31,11 @@ export default async function createGarage(
         .insert(employees)
         .values({ userId, garageId: id, status: "active" });
     });
+
+    revalidateTag("garages");
+    return { success: true, errors: [] };
   } catch (error: unknown) {
     console.error(error);
+    return { success: false, errors: ["Could not create garage"] };
   }
-
-  revalidateTag("garages");
 }
