@@ -13,7 +13,11 @@ const requestSchema = insertCarSchema.pick({
   fleet: true,
 });
 
-export default async function updateCar(carId: Car["id"], formData: FormData) {
+export default async function updateCar(
+  carId: Car["id"],
+  _formState: any,
+  formData: FormData
+) {
   const car = requestSchema.safeParse({
     make: formData.get("make"),
     model: formData.get("model"),
@@ -23,16 +27,17 @@ export default async function updateCar(carId: Car["id"], formData: FormData) {
   });
 
   if (!car.success) {
-    return { errors: car.error.errors.map((e) => e.message) };
+    return { success: false, errors: car.error.errors.map((e) => e.message) };
   }
 
   try {
     await db.update(cars).set(car.data).where(eq(cars.id, carId));
+
+    revalidateTag("cars");
+    revalidateTag("repairs");
+    return { success: true, errors: [] };
   } catch (error) {
     console.log(error);
-    return { errors: ["Could not create car"] };
+    return { success: false, errors: ["Could not create car"] };
   }
-
-  revalidateTag("cars");
-  revalidateTag("repairs");
 }
