@@ -23,6 +23,8 @@ import {
 import { format } from "date-fns";
 import { UnfoldVertical } from "lucide-react";
 import RepairDropdown from "./repair-dropdown";
+import { DataTable } from "./table/data-table";
+import { columns } from "./table/columns";
 
 type Props = {
   repairs: Awaited<ReturnType<typeof getGarageRepairs>>;
@@ -40,7 +42,8 @@ export default function RepairsTable({ repairs, addButton }: Props) {
         {addButton}
       </CardHeader>
       <CardContent>
-        <Table>
+        <DataTable columns={columns} data={repairs} />
+        {/* <Table>
           <TableHeader>
             <TableRow>
               <TableHead className="min-w-0 w-0"></TableHead>
@@ -122,7 +125,7 @@ export default function RepairsTable({ repairs, addButton }: Props) {
               </TableBody>
             </Collapsible>
           ))}
-        </Table>
+        </Table> */}
       </CardContent>
     </Card>
   );
