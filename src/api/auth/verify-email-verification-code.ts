@@ -26,8 +26,13 @@ export default async function verifyEmailVerificationCode(
       .limit(1);
 
     if (!databaseCode) {
-      tx.rollback();
-      return false;
+      try {
+        tx.rollback();
+      } catch (error) {
+        console.error(error);
+      } finally {
+        return false;
+      }
     }
 
     await tx

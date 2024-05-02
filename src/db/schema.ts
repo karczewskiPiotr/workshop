@@ -119,6 +119,10 @@ export type EmailVerificationCode = typeof emailVerificationCodes.$inferSelect;
 export const insertEmailVerificationCodeSchema = createInsertSchema(
   emailVerificationCodes,
   {
+    code: (schema) =>
+      schema.code
+        .length(8, { message: "Code must contain 8 characters" })
+        .regex(/^[0-9]+$/, { message: "Code must only contain numbers" }),
     email: (schema) => schema.email.email(),
   }
 );
