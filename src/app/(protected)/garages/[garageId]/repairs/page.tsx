@@ -3,19 +3,8 @@ import getGarageCars from "@/api/cars/get-garage-cars";
 import getGarage from "@/api/garages/get-garage";
 import getGarageRepairs from "@/api/repairs/get-garage-repairs";
 import Dashboard, { DashboardBreadcrumb } from "@/components/dashboard";
-import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import getGarageDashboardItems from "@/lib/getGarageDashboardItems";
-import { format } from "date-fns";
 import { redirect } from "next/navigation";
-import RepairForm from "./_components/create-repair-form";
 import RepairsTable from "./_components/repairs-table";
 import CreateRepairDialog from "./_components/create-repair-dialog";
 
@@ -39,7 +28,7 @@ export default async function RepairsPage({ params }: Props) {
   return (
     <Dashboard items={items} breadcrumbs={breadcrumbs}>
       <RepairsTable
-        repairs={repairs}
+        repairs={repairs.map((r) => ({ ...r, subRows: r.repair.description }))}
         addButton={
           <CreateRepairDialog
             cars={cars}
