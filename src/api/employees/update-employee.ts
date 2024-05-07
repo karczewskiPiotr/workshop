@@ -12,8 +12,10 @@ export default async function updateEmployee(
   try {
     await db.update(employees).set({ status }).where(eq(employees.id, id));
   } catch (error) {
+    console.log(error);
     return { errors: ["Could not update employee"] };
   }
 
   revalidateTag("employees");
+  revalidateTag("garages");
 }

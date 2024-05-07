@@ -13,11 +13,15 @@ type Props = {
 
 export default function Employment(props: Props) {
   return (
-    <li key={props.id} className="space-x-4">
+    <li className="space-x-4">
       <span>
         {props.label} - {props.status}
       </span>
-      <Button onClick={() => updateEmployee(props.id, "active")}>Accept</Button>
+      {props.status !== "active" && (
+        <Button onClick={() => updateEmployee(props.id, "active")}>
+          Accept
+        </Button>
+      )}
       <Button variant="destructive" onClick={() => deleteEmployee(props.id)}>
         Reject
       </Button>
