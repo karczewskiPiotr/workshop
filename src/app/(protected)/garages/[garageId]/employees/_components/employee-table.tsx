@@ -1,5 +1,4 @@
 import getEmployees from "@/api/employees/get-employees";
-import { Badge } from "@/components/ui/badge";
 import {
   Card,
   CardContent,
@@ -7,16 +6,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { Garage } from "@/db/schema";
-import EmployeeDropdown from "./employee-dropdown";
+import { DataTable } from "@/components/ui/data-table/data-table";
+import { columns } from "./employee-table-columns";
 
 type Props = {
   employees: Awaited<ReturnType<typeof getEmployees>>;
@@ -30,7 +22,7 @@ export default async function EmployeeTable({
   addButton,
 }: Props) {
   return (
-    <Card className="xl:col-span-2">
+    <Card className="xl:col-span-2 max-w-[calc(100vw-2rem)] sm:max-w-[calc(100vw-6.5rem)]">
       <CardHeader className="flex flex-row items-center">
         <div className="grid gap-2">
           <CardTitle>Employees</CardTitle>
@@ -41,41 +33,7 @@ export default async function EmployeeTable({
         {addButton}
       </CardHeader>
       <CardContent>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Employee</TableHead>
-              <TableHead>Role</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead className="min-w-0 w-0"></TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {employees.map((employee) => (
-              <TableRow key={employee.id}>
-                <TableCell>
-                  <div className="font-medium">
-                    {employee.name} {employee.surname}
-                  </div>
-                  <div className="text-sm text-muted-foreground">
-                    {employee.email}
-                  </div>
-                </TableCell>
-                <TableCell>
-                  {employee.userId === owner ? "Owner" : "Employee"}
-                </TableCell>
-                <TableCell>
-                  <Badge className="text-xs capitalize" variant="outline">
-                    {employee.status}
-                  </Badge>
-                </TableCell>
-                <TableCell className="text-right">
-                  <EmployeeDropdown employeeId={employee.id} />
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+        <DataTable columns={columns} data={employees} />
       </CardContent>
     </Card>
   );

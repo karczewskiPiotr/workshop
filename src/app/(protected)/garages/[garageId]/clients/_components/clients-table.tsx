@@ -5,16 +5,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import getClients from "@/api/clients/get-clients";
-import ClientDropdown from "./client-dropdown";
+import { DataTable } from "@/components/ui/data-table/data-table";
+import { columns } from "./clients-table-columns";
 
 type Props = {
   clients: Awaited<ReturnType<typeof getClients>>;
@@ -32,34 +25,7 @@ export default async function ClientsTable({ clients, addButton }: Props) {
         {addButton}
       </CardHeader>
       <CardContent>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Name</TableHead>
-              <TableHead>Email</TableHead>
-              <TableHead>Phone</TableHead>
-              <TableHead>Company</TableHead>
-              <TableHead className="min-w-0 w-0"></TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {clients.map((client) => (
-              <TableRow key={client.id}>
-                <TableCell>
-                  <div className="font-medium">
-                    {client.name} {client.surname}
-                  </div>
-                </TableCell>
-                <TableCell>{client.email ?? "—"}</TableCell>
-                <TableCell>{client.phone ?? "—"}</TableCell>
-                <TableCell>{client.company ?? "—"}</TableCell>
-                <TableCell className="text-right">
-                  <ClientDropdown client={client} />
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+        <DataTable columns={columns} data={clients} />
       </CardContent>
     </Card>
   );

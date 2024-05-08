@@ -1,7 +1,5 @@
 "use client";
 
-import getGarageCars from "@/api/cars/get-garage-cars";
-import createRepair from "@/api/repairs/create-repair";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Label } from "@/components/ui/label";
@@ -17,7 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Garage, User, insertRepairSchema } from "@/db/schema";
+import { insertRepairSchema } from "@/db/schema";
 import { cn } from "@/lib/utils";
 import { FormEvent, useRef } from "react";
 import { useFormState } from "react-dom";

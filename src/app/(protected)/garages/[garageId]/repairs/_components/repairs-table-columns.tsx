@@ -3,9 +3,9 @@
 import getGarageRepairs from "@/api/repairs/get-garage-repairs";
 import type { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
-import RepairDropdown from "../repair-dropdown";
+import RepairDropdown from "./repair-dropdown";
 import { CircleCheck, CircleX } from "lucide-react";
-import { DataTableColumnHeader } from "../../../../../../../components/ui/data-table/data-table-column-header";
+import { DataTableColumnHeader } from "../../../../../../components/ui/data-table/data-table-column-header";
 
 export type RepairColumn = Awaited<ReturnType<typeof getGarageRepairs>>[number];
 

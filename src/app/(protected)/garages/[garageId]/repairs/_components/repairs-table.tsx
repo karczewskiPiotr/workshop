@@ -7,7 +7,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { DataTable } from "../../../../../../components/ui/data-table/data-table";
-import { columns } from "./table/columns";
+import { columns } from "./repairs-table-columns";
 
 type Props = {
   repairs: Awaited<ReturnType<typeof getGarageRepairs>>;
