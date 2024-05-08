@@ -1,5 +1,4 @@
 import getGarages from "@/api/garages/get-garages";
-import { buttonVariants } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -11,33 +10,24 @@ import {
 
 import { User } from "@/db/schema";
 import CreateGarageDialog from "./create-garage-dialog";
+import GaragesTable from "./garages-table";
 
 export default async function Garages(props: { userId: User["id"] }) {
   const garages = await getGarages(props.userId);
 
   return (
     <Card>
-      <CardHeader>
-        <CardTitle>Garages</CardTitle>
-        <CardDescription>Manage your garages</CardDescription>
+      <CardHeader className="flex flex-row items-center gap-2">
+        <div className="grid gap-2">
+          <CardTitle>Garages</CardTitle>
+          <CardDescription>Manage your garages</CardDescription>
+        </div>
+        <CreateGarageDialog userId={props.userId} />
       </CardHeader>
       <CardContent>
-        <ul>
-          {garages.map((garage) => (
-            <li key={garage.id}>
-              <a
-                href={`/garages/${garage.id}`}
-                className={buttonVariants({ variant: "link" })}
-              >
-                {garage.name}
-              </a>
-            </li>
-          ))}
-        </ul>
+        <GaragesTable garages={garages} />
       </CardContent>
-      <CardFooter>
-        <CreateGarageDialog userId={props.userId} />
-      </CardFooter>
+      <CardFooter></CardFooter>
     </Card>
   );
 }

@@ -20,7 +20,7 @@ export default function CreateGarageDialog({ userId }: Props) {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
+      <DialogTrigger asChild className="ml-auto">
         <Button variant="default">Create a garage</Button>
       </DialogTrigger>
       <DialogContent>

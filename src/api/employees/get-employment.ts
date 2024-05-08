@@ -9,6 +9,7 @@ export default unstable_cache(
       .select({
         id: employees.id,
         status: employees.status,
+        garageId: garages.id,
         garage: garages.name,
       })
       .from(employees)

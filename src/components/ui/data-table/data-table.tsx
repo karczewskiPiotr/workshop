@@ -28,11 +28,15 @@ import { DataTableToolbar } from "./data-table-toolbar";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  disableToolbar?: boolean;
+  cellAlignment?: "align-top" | "align-middle" | "align-bottom";
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  disableToolbar = false,
+  cellAlignment = "align-top",
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -53,7 +57,7 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className="space-y-4">
-      <DataTableToolbar table={table} />
+      {disableToolbar ? null : <DataTableToolbar table={table} />}
       <div>
         <Table>
           <TableHeader>
@@ -82,7 +86,7 @@ export function DataTable<TData, TValue>({
                   data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id} className="align-top">
+                    <TableCell key={cell.id} className={cellAlignment}>
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
