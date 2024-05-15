@@ -25,11 +25,6 @@ export default function UserDropdown() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuLabel>My Account</DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem>Settings</DropdownMenuItem>
-        <DropdownMenuItem>Support</DropdownMenuItem>
-        <DropdownMenuSeparator />
         <DropdownMenuItem onSelect={() => logout()}>Log out</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
