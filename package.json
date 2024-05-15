@@ -12,7 +12,8 @@
     "drizzle:seed": "dotenv -e .env.development jiti ./src/db/seed.ts",
     "docker:db:build": "docker build -t postgres_db .",
     "docker:db:up": "docker run -p 5432:5432 --name workshop_db postgres_db",
-    "docker:db:start": "docker start workshop_db -a"
+    "docker:db:start": "docker start workshop_db -a",
+    "drizzle:prod:push": "dotenv -e .env drizzle-kit push:pg"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
