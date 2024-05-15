@@ -42,6 +42,7 @@ export default async function signup(_prevState: any, formData: FormData) {
   try {
     await sendEmailVerificationcode(userId, user.data.email);
   } catch (error: unknown) {
+    console.error(error);
     return { errors: ["Could not send verification code"] };
   }
 
