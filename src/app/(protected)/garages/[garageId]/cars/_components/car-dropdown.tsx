@@ -30,7 +30,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import deleteCar from "@/api/cars/delete-repair";
+import deleteCar from "@/api/cars/delete-car";
 
 type Props = {
   car: Awaited<ReturnType<typeof getGarageCars>>[number];
