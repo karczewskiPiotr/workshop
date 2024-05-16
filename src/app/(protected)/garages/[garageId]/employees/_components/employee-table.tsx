@@ -9,6 +9,7 @@ import {
 import { Garage } from "@/db/schema";
 import { DataTable } from "@/components/ui/data-table/data-table";
 import { columns } from "./employee-table-columns";
+import { useMemo } from "react";
 
 type Props = {
   employees: Awaited<ReturnType<typeof getEmployees>>;
@@ -21,6 +22,13 @@ export default async function EmployeeTable({
   owner,
   addButton,
 }: Props) {
+  const data = useMemo(() => {
+    return employees.map((employee) => ({
+      ...employee,
+      isOwner: owner === employee.userId,
+    }));
+  }, [employees]);
+
   return (
     <Card className="xl:col-span-2 max-w-[calc(100vw-2rem)] sm:max-w-[calc(100vw-6.5rem)]">
       <CardHeader className="flex flex-row items-center">
@@ -33,7 +41,7 @@ export default async function EmployeeTable({
         {addButton}
       </CardHeader>
       <CardContent>
-        <DataTable columns={columns} data={employees} />
+        <DataTable columns={columns} data={data} />
       </CardContent>
     </Card>
   );

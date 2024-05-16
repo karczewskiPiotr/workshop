@@ -5,7 +5,9 @@ import { DataTableColumnHeader } from "@/components/ui/data-table/data-table-col
 import { ColumnDef } from "@tanstack/react-table";
 import EmployeeDropdown from "./employee-dropdown";
 
-export type EmployeeColumn = Awaited<ReturnType<typeof getEmployees>>[number];
+export type EmployeeColumn = Awaited<
+  ReturnType<typeof getEmployees>
+>[number] & { isOwner: boolean };
 
 export const columns: ColumnDef<EmployeeColumn>[] = [
   {
@@ -41,6 +43,11 @@ export const columns: ColumnDef<EmployeeColumn>[] = [
   },
   {
     id: "actions",
-    cell: ({ row }) => <EmployeeDropdown employeeId={row.id} />,
+    cell: ({ row }) => (
+      <EmployeeDropdown
+        employeeId={row.original.id}
+        isOwner={row.original.isOwner}
+      />
+    ),
   },
 ];

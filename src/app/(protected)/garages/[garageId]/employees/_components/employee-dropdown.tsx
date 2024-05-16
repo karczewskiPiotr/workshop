@@ -24,8 +24,9 @@ import { Ellipsis } from "lucide-react";
 
 type Props = {
   employeeId: Employee["id"];
+  isOwner: boolean;
 };
-export default function EmployeeDropdown({ employeeId }: Props) {
+export default function EmployeeDropdown({ employeeId, isOwner }: Props) {
   return (
     <AlertDialog>
       <DropdownMenu>
@@ -36,7 +37,9 @@ export default function EmployeeDropdown({ employeeId }: Props) {
         </DropdownMenuTrigger>
         <DropdownMenuContent>
           <AlertDialogTrigger asChild>
-            <DropdownMenuItem>Revoke access</DropdownMenuItem>
+            <DropdownMenuItem disabled={isOwner}>
+              Revoke access
+            </DropdownMenuItem>
           </AlertDialogTrigger>
         </DropdownMenuContent>
       </DropdownMenu>
