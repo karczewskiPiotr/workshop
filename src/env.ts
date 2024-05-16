@@ -6,6 +6,7 @@ export const env = createEnv({
   server: {
     DATABASE_URL: z.string().url(),
     RESEND_API_KEY: z.string().min(1),
+    EMAIL_DOMAIN: z.string(),
   },
   shared: {
     NODE_ENV: z.enum(["development", "production"]),
