@@ -45,9 +45,9 @@ const formSchema = insertCarSchema.pick({
   fleet: true,
 });
 
-type Props = { clients: Client[]; closeDialog: () => void };
+type Props = { clients: Client[]; onSuccess: () => void };
 
-export default function NewCarForm({ clients, closeDialog }: Props) {
+export default function NewCarForm({ clients, onSuccess }: Props) {
   const formRef = useRef<HTMLFormElement>(null);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -75,8 +75,8 @@ export default function NewCarForm({ clients, closeDialog }: Props) {
   }
 
   useEffect(() => {
-    if (state.success === true) closeDialog();
-  }, [state.success]);
+    if (state.success === true) onSuccess();
+  }, [state.success, onSuccess]);
 
   return (
     <Form {...form}>

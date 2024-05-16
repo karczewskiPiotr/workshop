@@ -42,7 +42,7 @@ type Props = {
   garageId: Garage["id"];
   userId: User["id"];
   cars: Awaited<ReturnType<typeof getGarageCars>>;
-  closeDialog: () => void;
+  onSuccess: () => void;
 };
 
 const formSchema = insertRepairSchema.pick({
@@ -51,7 +51,12 @@ const formSchema = insertRepairSchema.pick({
   servicedAt: true,
 });
 
-export default function RepairForm(props: Props) {
+export default function RepairForm({
+  cars,
+  garageId,
+  userId,
+  onSuccess,
+}: Props) {
   const formRef = useRef<HTMLFormElement>(null);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -62,7 +67,7 @@ export default function RepairForm(props: Props) {
   });
 
   const [state, formAction] = useFormState(
-    createRepair.bind(null, props.garageId, props.userId),
+    createRepair.bind(null, garageId, userId),
     { errors: [], success: false }
   );
 
@@ -77,8 +82,8 @@ export default function RepairForm(props: Props) {
   }
 
   useEffect(() => {
-    if (state.success) props.closeDialog();
-  }, [state.success]);
+    if (state.success) onSuccess();
+  }, [state.success, onSuccess]);
 
   return (
     <Form {...form}>
@@ -92,7 +97,7 @@ export default function RepairForm(props: Props) {
           control={form.control}
           name="carId"
           render={({ field }) => {
-            const car = props.cars.find((car) => car.id === field.value);
+            const car = cars.find((car) => car.id === field.value);
 
             return (
               <FormItem className="flex flex-col">
@@ -126,7 +131,7 @@ export default function RepairForm(props: Props) {
                       <CommandEmpty>No cars found.</CommandEmpty>
                       <CommandGroup>
                         <CommandList>
-                          {props.cars.map((car) => (
+                          {cars.map((car) => (
                             <CommandItem
                               keywords={
                                 [

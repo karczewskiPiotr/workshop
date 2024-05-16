@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/dialog";
 import { Garage } from "@/db/schema";
 import { Plus } from "lucide-react";
-import { ComponentPropsWithoutRef, useState } from "react";
+import { ComponentPropsWithoutRef, useCallback, useState } from "react";
 import NewEmployeeForm from "./new-employee-form";
 
 type Props = {
@@ -27,6 +27,8 @@ export default function AddEmployeeDialog({
   buttonProps = {},
 }: Props) {
   const [open, setOpen] = useState(false);
+
+  const closeDialog = useCallback(() => setOpen(false), []);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -46,7 +48,7 @@ export default function AddEmployeeDialog({
         <NewEmployeeForm
           garageId={garageId}
           employeesPool={potentialEmployees}
-          closeDialog={() => setOpen(false)}
+          onSuccess={closeDialog}
         />
       </DialogContent>
     </Dialog>

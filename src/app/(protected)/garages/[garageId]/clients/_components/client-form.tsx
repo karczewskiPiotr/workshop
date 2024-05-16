@@ -74,7 +74,7 @@ export default function ClientForm({
 
   useEffect(() => {
     if (state.success && onSuccess) onSuccess();
-  }, [state.success]);
+  }, [state.success, onSuccess]);
 
   return (
     <Form {...form}>

@@ -13,12 +13,14 @@ import {
 import { Client } from "@/db/schema";
 import { Plus } from "lucide-react";
 import NewCarForm from "./new-car-form";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 type Props = { clients: Client[] };
 
 export default function NewCarDialog({ clients }: Props) {
   const [open, setOpen] = useState(false);
+
+  const closeDialog = useCallback(() => setOpen(false), []);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -33,7 +35,7 @@ export default function NewCarDialog({ clients }: Props) {
           <DialogTitle>Add a car</DialogTitle>
           <DialogDescription>This action will add a car.</DialogDescription>
         </DialogHeader>
-        <NewCarForm closeDialog={() => setOpen(false)} clients={clients} />
+        <NewCarForm onSuccess={closeDialog} clients={clients} />
       </DialogContent>
     </Dialog>
   );

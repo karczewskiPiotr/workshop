@@ -69,7 +69,7 @@ export default function UpdateCarForm({ car, onSuccess }: Props) {
 
   useEffect(() => {
     if (state.success && onSuccess) onSuccess();
-  }, [state.success]);
+  }, [state.success, onSuccess]);
   return (
     <Form {...form}>
       <form

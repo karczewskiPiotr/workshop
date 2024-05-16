@@ -27,7 +27,7 @@ export default async function EmployeeTable({
       ...employee,
       isOwner: owner === employee.userId,
     }));
-  }, [employees]);
+  }, [employees, owner]);
 
   return (
     <Card className="xl:col-span-2 max-w-[calc(100vw-2rem)] sm:max-w-[calc(100vw-6.5rem)]">

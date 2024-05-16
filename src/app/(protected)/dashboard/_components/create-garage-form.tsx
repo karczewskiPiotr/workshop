@@ -42,7 +42,7 @@ export default function CreateGarageForm({ userId, onSuccess }: Props) {
 
   useEffect(() => {
     if (state.success) onSuccess();
-  }, [state.success]);
+  }, [state.success, onSuccess]);
 
   return (
     <Form {...form}>

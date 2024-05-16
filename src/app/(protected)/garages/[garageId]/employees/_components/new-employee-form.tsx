@@ -37,7 +37,7 @@ import { z } from "zod";
 type Props = {
   garageId: Garage["id"];
   employeesPool: Awaited<ReturnType<typeof getPotentialEmployees>>;
-  closeDialog: () => void;
+  onSuccess: () => void;
 };
 
 const formSchema = insertEmployeeSchema.pick({ userId: true });
@@ -45,7 +45,7 @@ const formSchema = insertEmployeeSchema.pick({ userId: true });
 export default function NewEmployeeForm({
   garageId,
   employeesPool,
-  closeDialog,
+  onSuccess,
 }: Props) {
   const formRef = useRef<HTMLFormElement>(null);
   const form = useForm<z.infer<typeof formSchema>>({
@@ -66,8 +66,8 @@ export default function NewEmployeeForm({
   }
 
   useEffect(() => {
-    if (state.success === true) closeDialog();
-  }, [state.success]);
+    if (state.success === true) onSuccess();
+  }, [state.success, onSuccess]);
 
   return (
     <Form {...form}>

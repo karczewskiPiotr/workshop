@@ -11,7 +11,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Ellipsis } from "lucide-react";
-import { ComponentPropsWithoutRef, useState } from "react";
+import { ComponentPropsWithoutRef, useCallback, useState } from "react";
 import UpdateCarForm from "./update-car-form";
 import {
   DropdownMenu,
@@ -40,6 +40,8 @@ type Props = {
 export default function CarDropdown({ car }: Props) {
   const [open, setOpen] = useState(false);
 
+  const closeDialog = useCallback(() => setOpen(false), []);
+
   return (
     <AlertDialog>
       <Dialog open={open} onOpenChange={setOpen}>
@@ -65,7 +67,7 @@ export default function CarDropdown({ car }: Props) {
               This action will update properties of the car.
             </DialogDescription>
           </DialogHeader>
-          <UpdateCarForm car={car} onSuccess={() => setOpen(false)} />
+          <UpdateCarForm car={car} onSuccess={closeDialog} />
         </DialogContent>
       </Dialog>
       <AlertDialogContent>

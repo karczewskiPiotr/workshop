@@ -10,17 +10,17 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Garage } from "@/db/schema";
 import { Plus } from "lucide-react";
 import ClientForm from "./client-form";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 type Props = { garageId: Garage["id"] };
 
 export default function NewClientDialog({ garageId }: Props) {
   const [open, setOpen] = useState(false);
+
+  const closeDialog = useCallback(() => setOpen(false), []);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -37,7 +37,7 @@ export default function NewClientDialog({ garageId }: Props) {
         </DialogHeader>
         <ClientForm
           action={createClient.bind(null, garageId)}
-          onSuccess={() => setOpen(false)}
+          onSuccess={closeDialog}
         >
           <Button type="submit">Add client</Button>
         </ClientForm>

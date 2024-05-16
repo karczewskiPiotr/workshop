@@ -31,12 +31,14 @@ import {
 import deleteClient from "@/api/clients/delete-client";
 import ClientForm from "./client-form";
 import updateClient from "@/api/clients/update-client";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 type Props = { client: Client };
 
 export default function ClientDropdown({ client }: Props) {
   const [open, setOpen] = useState(false);
+
+  const closeDialog = useCallback(() => setOpen(false), []);
 
   return (
     <AlertDialog>
@@ -65,7 +67,7 @@ export default function ClientDropdown({ client }: Props) {
           </DialogHeader>
           <ClientForm
             defaultValues={client}
-            onSuccess={() => setOpen(false)}
+            onSuccess={closeDialog}
             action={updateClient.bind(null, client.id)}
           >
             <Button type="submit">Update client</Button>

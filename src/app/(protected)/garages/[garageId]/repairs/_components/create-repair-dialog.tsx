@@ -13,7 +13,7 @@ import RepairForm from "./create-repair-form";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import getGarageCars from "@/api/cars/get-garage-cars";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 type Props = {
   userId: User["id"];
@@ -23,6 +23,8 @@ type Props = {
 
 export default function CreateRepairDialog({ cars, garageId, userId }: Props) {
   const [open, setOpen] = useState(false);
+
+  const closeDialog = useCallback(() => setOpen(false), []);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -41,7 +43,7 @@ export default function CreateRepairDialog({ cars, garageId, userId }: Props) {
           cars={cars}
           garageId={garageId}
           userId={userId}
-          closeDialog={() => setOpen(false)}
+          onSuccess={closeDialog}
         />
       </DialogContent>
     </Dialog>
